@@ -63,7 +63,7 @@ public class Signup extends HttpServlet {
 			response.setStatus(400);
 			json.put("msg", "Invalid values in important fields detected, please check all the fields");
 		}
-		response.getWriter().print(json.toString());
+		response.getWriter().print(json.toString().replaceAll("\n", ""));
 	}
 
 }

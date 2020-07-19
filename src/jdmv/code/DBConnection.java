@@ -15,12 +15,9 @@ import org.json.JSONObject;
 public class DBConnection {
 	
     private Connection connection;
-    
-    //public static int counter = 1; 
-
 	String json = "";
 	int status = 1;
-	Boolean flag = false;	
+	
 	/* This function connect to the date base and executes the query provided 
 	 * the reason for do both actions in the same function is to optimize 
 	 * (normally when a db connection is set is to execute a query), i made this 
@@ -28,7 +25,6 @@ public class DBConnection {
 	 * library, i tried to be the more independent from third party jars as possible */ 
 	int execSql(String query){
 		this.json = "";
-		flag = false;
 		status = 0;
 			try {
 				this.connection = null;
@@ -62,19 +58,17 @@ public class DBConnection {
 						}//for de j
 						if(json.equals("")){
 							json += "{"+_user+"}";
-							flag = true;
 					
 						}else{
-							json += ",{"+_user+"}";
-							flag = true;
+							json += ",{"+_user+"}";							
 						
 						}
-						if(json.length() > 0 && !flag){
+						if(json.length() > 0){
 							status = 1;
-						}else if (json.length() == 0 && !flag) {
+						}else if (json.length() == 0) {
 							status = 0;
 						}
-						if(flag && query.toUpperCase().contains("SELECT") && query.toUpperCase().contains("WHERE")){
+						if(query.toUpperCase().contains("SELECT") && query.toUpperCase().contains("WHERE")){
 							status = 1;
 						}
 						
