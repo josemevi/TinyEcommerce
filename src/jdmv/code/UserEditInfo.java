@@ -13,12 +13,12 @@ import org.json.JSONObject;
 /**
  * Servlet implementation class UserPaymentInfo
  */
-@WebServlet("/userPaymentInfo")
-public class UserPaymentInfo extends HttpServlet {
+@WebServlet("/userEditInfo")
+public class UserEditInfo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	DBConnection con = new DBConnection();  
     
-    public UserPaymentInfo() {
+    public UserEditInfo() {
         super();
    
     }
@@ -31,6 +31,10 @@ public class UserPaymentInfo extends HttpServlet {
 	
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
+		Signup mail = new Signup();
+		String email = request.getParameter("email");
+		String name = request.getParameter("name");
+		String lastName = request.getParameter("lastName");
 		String document_type = request.getParameter("document_type").toString();
 		String document_number = request.getParameter("document_number").toString();
 		String direction = request.getParameter("direction").toString();
@@ -49,16 +53,25 @@ public class UserPaymentInfo extends HttpServlet {
 		}
 		JSONObject json = new JSONObject();
 		if(session != null) {
-			System.out.println("UPDATE users SET document_type="+document_type+ ",document_number="+con.simpleQuoted(document_number)
-			+",direction="+con.simpleQuoted(direction)+",ccNumber="+ccNumber+ " WHERE user_id="+session.getAttribute("userId"));
-			if(con.execSql("UPDATE users SET document_type="+document_type+ ",document_number="+con.simpleQuoted(document_number)
-			+",direction="+con.simpleQuoted(direction)+",cc_number="+ccNumber+ " WHERE user_id="+session.getAttribute("userId")) == 1) {
-				response.setStatus(200);
-				json.put("msg", "ok");			
+			if(con.checkString(name) && con.checkString(lastName) && con.checkString(email)) {
+				if(!mail.checkEmail(email)) {					
+					if(con.execSql("UPDATE users SET email= "+con.simpleQuoted(email)+",name="+con.simpleQuoted(name)+",lastname="+con.simpleQuoted(lastName)
+					+",document_type="+document_type+ ",document_number="+con.simpleQuoted(document_number)+",direction ="+con.simpleQuoted(direction)
+					+",cc_number="+ccNumber+ " WHERE user_id="+session.getAttribute("userId")) == 1) {
+						response.setStatus(200);
+						json.put("msg", "ok");			
+					}else {
+						response.setStatus(500);
+						json.put("msg", "Server Error");			
+					}
+				}else {
+					response.setStatus(400);
+					json.put("msg", "Email Already In Use");
+				}
 			}else {
-				response.setStatus(500);
-				json.put("msg", "Server Error");			
-			}
+				response.setStatus(400);
+				json.put("msg", "Invalid values in important fields detected, please check all the fields");
+			}			
 		}else {
 			response.setStatus(403);
 			json.put("msg", "Invalid Session please log in first");
