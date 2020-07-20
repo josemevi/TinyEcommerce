@@ -6,33 +6,53 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.json.JSONObject;
 
 /**
  * Servlet implementation class EditOrder
  */
-@WebServlet("/EditOrder")
+@WebServlet("/editOrder")
 public class EditOrder extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+    DBConnection con = new DBConnection();   
+  
     public EditOrder() {
         super();
-        // TODO Auto-generated constructor stub
+        
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+	
+	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		String orderId = request.getParameter("orderId");
+		String status = request.getParameter("status");
+		JSONObject json = new JSONObject();
+		if(!con.checkString(status)) {
+			status = "In Progress";
+		}
+		if(session != null) {	
+			if(con.checkString(orderId)) {
+				if(con.execSql("UPDATE orders SET order_status="+con.simpleQuoted(status)+" WHERE order_id="+orderId) == 1) {
+					response.setStatus(200);
+					json.put("msg", "Order Updated");	
+				}else {
+					response.setStatus(500);
+					json.put("msg", "Server Error");
+				}
+			}else {
+				response.setStatus(400);
+				json.put("msg", "Order id empty or invalid");
+			}
+		}else {
+			response.setStatus(403);
+			json.put("msg", "Invalid Session please log in first");
+		}
+		response.getWriter().print(json.toString());
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
