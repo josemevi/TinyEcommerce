@@ -124,8 +124,12 @@ public class DBConnection {
 	/* both functions just do as the name indicates, returns simple or double quoted Strings
 	 * that are previously specified, i use this functions to insert quotes easily in strings 
 	 * to executes queries*/
-	String simpleQuoted(String value){
-		return "'"+value+"'";
+	String simpleQuoted(String value){		
+		if(value == null || value.equals("undefined")) {
+			return null;
+		}else {
+			return "'"+value+"'";
+		}		
 	}
 	
 	String doubleQuoted(String value){

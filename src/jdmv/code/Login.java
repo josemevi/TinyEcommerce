@@ -39,15 +39,15 @@ public class Login extends HttpServlet {
 		if(session == null) {			
 			//String email = requestJson.get("email").toString();
 			//String password = requestJson.get("password").toString();			
-			con.execSql("SELECT id, email, password FROM users WHERE email= "+con.simpleQuoted(email));			
+			con.execSql("SELECT user_id, email, password FROM users WHERE email= "+con.simpleQuoted(email));			
 			if(con.getData().length() > 0) {
 				JSONObject result = new JSONObject(con.getData());
 				if(password.equals(result.get("password"))) {
 					response.setStatus(200);
 					json.put("login", true);
-					json.put("userId", result.get("id"));
+					json.put("userId", result.get("user_id"));
 					session = request.getSession();
-					session.setAttribute("userId", result.get("id"));
+					session.setAttribute("userId", result.get("user_id"));
 				}else {
 					response.setStatus(401);
 					json.put("login", false);

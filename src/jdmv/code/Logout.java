@@ -30,8 +30,7 @@ public class Logout extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		JSONObject json = new JSONObject();	
-		if(session != null) {
-			System.out.println(session.getAttribute("userId"));
+		if(session != null) {			
 			session.invalidate();
 			response.setStatus(200);
 			json.put("logout", true);
