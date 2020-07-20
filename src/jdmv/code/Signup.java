@@ -46,7 +46,7 @@ public class Signup extends HttpServlet {
 		if(con.checkString(email) && con.checkString(password) && con.checkString(name) && con.checkString(lastName)) {
 			if(checkEmail(email)) {
 				response.setStatus(400);
-				json.put("msg", "Email Already Exist");
+				json.put("msg", "Email Already In Use");
 			}else {
 				int insert = con.execSql("INSERT INTO users values (DEFAULT, "+con.simpleQuoted(email)+", DEFAULT,"
 						+ con.simpleQuoted(password)+", "+con.simpleQuoted(name)+", "+con.simpleQuoted(lastName)+")");			
