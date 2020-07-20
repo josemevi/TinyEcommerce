@@ -13,12 +13,12 @@ import org.json.JSONObject;
 /**
  * Servlet implementation class UserPaymentInfo
  */
-@WebServlet("/userEditInfo")
-public class UserEditInfo extends HttpServlet {
+@WebServlet("/editUserInfo")
+public class EditUserInfo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	DBConnection con = new DBConnection();  
     
-    public UserEditInfo() {
+    public EditUserInfo() {
         super();
    
     }

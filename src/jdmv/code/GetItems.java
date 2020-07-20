@@ -23,8 +23,7 @@ public class GetItems extends HttpServlet {
         
     }
     
-    public void GetTemplate (String param, String resultName, HttpServletResponse response) {
-    	System.out.println("SELECT * FROM items "+param);
+    public void GetTemplate (String param, String resultName, HttpServletResponse response) {    	
     	json = new JSONObject();
     	if(con.execSql("SELECT * FROM items "+param) == 1) {
 			JSONObject jsonRes = new JSONObject("{\""+resultName+"\":["+con.getData()+"]}");			
@@ -42,8 +41,7 @@ public class GetItems extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String catalogId = request.getParameter("catalogId");
-		String mode = request.getParameter("mode");
-		System.out.println(mode);
+		String mode = request.getParameter("mode");		
 		if(!con.checkString(mode)) {
 			mode = "";
 		}		
