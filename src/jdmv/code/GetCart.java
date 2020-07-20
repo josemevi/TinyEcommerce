@@ -20,42 +20,42 @@ import org.json.JSONObject;
 public class GetCart extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     DBConnection con = new DBConnection();
+	JSONObject jsonRes = new JSONObject();
    
     public GetCart() {
         super();
         
     }
+    
+    public void GetCartJson (String userId) {
+    	try {
+			String result = "{\"items\":"+con.getJSONFromDB("SELECT items  FROM cart WHERE user_id="+userId);
+			if(result.contains("null")) {
+				result = "{\"items\":\"\"";
+			}
+			jsonRes = new JSONObject(result+"}");
+		} catch (JSONException | SQLException e) {
+		
+			e.printStackTrace();
+		}
+    }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
-		String userId = request.getParameter("userId");
 		JSONObject json = new JSONObject();
-		JSONObject jsonRes = new JSONObject();
-		if(session != null) {
-			if(con.checkString(userId)) {
-				if(con.execSql("SELECT cart_id FROM cart WHERE user_id="+userId+" AND checkout=false") == 1) {									
-					try {
-						String result = "{\"cart\":"+con.getJSONFromDB("SELECT items  FROM cart WHERE user_id="+userId);						
-						jsonRes = new JSONObject(result+"}");
-					} catch (JSONException | SQLException e) {
-					
-						e.printStackTrace();
-					}
-					response.setStatus(200);
-					json = new JSONObject(con.getData());
-					json.put("items:", jsonRes.get("cart"));
-				}else if (con.getData().length() == 0) {			
-					response.setStatus(204);
-					//json.put("msg", "There're no items in this category");
-				}else {
-					response.setStatus(500);
-					json.put("msg", "Server Error");
-				}
-				
+		if(session != null) {			
+			if(con.execSql("SELECT cart_id FROM cart WHERE user_id="+session.getAttribute("userId")+" AND checkout=false") == 1) {									
+				GetCartJson(session.getAttribute("userId").toString());
+				response.setStatus(200);
+				json = new JSONObject(con.getData());
+				json.put("items:", jsonRes.get("items"));
+			}else if (con.getData().length() == 0) {			
+				response.setStatus(204);
+				//json.put("msg", "There're no items in this category");
 			}else {
-				response.setStatus(400);
-				json.put("msg", "User id is empty or invalid");
-			}
+				response.setStatus(500);
+				json.put("msg", "Server Error");
+			}						
 		}else {
 			response.setStatus(403);
 			json.put("msg", "Invalid Session please log in first");
