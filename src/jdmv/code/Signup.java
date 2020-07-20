@@ -47,13 +47,12 @@ public class Signup extends HttpServlet {
 			if(checkEmail(email)) {
 				response.setStatus(400);
 				json.put("msg", "Email Already In Use");
-			}else {
-				int insert = con.execSql("INSERT INTO users values (DEFAULT, "+con.simpleQuoted(email)+", DEFAULT,"
-						+ con.simpleQuoted(password)+", "+con.simpleQuoted(name)+", "+con.simpleQuoted(lastName)+")");			
-				if(insert == 1){
+			}else {					
+				if(con.execSql("INSERT INTO users values (DEFAULT, "+con.simpleQuoted(email)+", DEFAULT,"
+						+ con.simpleQuoted(password)+", "+con.simpleQuoted(name)+", "+con.simpleQuoted(lastName)+")") == 1){
 					response.setStatus(201);
 					json.put("msg", "Created");
-			    }else if (insert == 0){
+			    }else{
 			    	response.setStatus(500);
 					json.put("msg", "Server error");
 			    }		
