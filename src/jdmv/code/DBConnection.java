@@ -43,16 +43,16 @@ public class DBConnection {
 						String _user = "";
 						for(int j = 0; j < columns ; j++){						
 							if(_user.equals("")){
-								if(rs.getObject(j+1) == null) {
-									_user += ",\""+rsmd.getColumnName(j+1) + "\":\""+null+"\"";	
-								} else {
-									_user += "\""+rsmd.getColumnName(j+1) + "\":\""+rs.getObject(j+1).toString()+"\"";	
+								if(rs.getObject(j+1) == null) {									
+									_user += ",\""+rsmd.getColumnName(j+1) + "\":\""+null+"\"";																				
+								} else {									
+									_user += "\""+rsmd.getColumnName(j+1) + "\":\""+rs.getObject(j+1).toString()+"\"";																			
 								}							
 							} else {
-								if(rs.getObject(j+1) == null) {
-									_user += ",\""+rsmd.getColumnName(j+1) + "\":\""+null+"\"";	
-								} else {
-									_user += ",\""+rsmd.getColumnName(j+1) + "\":\""+rs.getObject(j+1).toString()+"\"";	
+								if(rs.getObject(j+1) == null) {									
+									_user += ",\""+rsmd.getColumnName(j+1) + "\":\""+null+"\"";																										
+								} else {									
+									_user += ",\""+rsmd.getColumnName(j+1) + "\":\""+rs.getObject(j+1).toString()+"\"";																																
 								}							
 							}
 						}//for de j
@@ -91,10 +91,29 @@ public class DBConnection {
 
 	}
 	
+	 String getJSONFromDB (String query) throws SQLException {
+		 String result = "";
+		 try {
+			this.connection = null;
+			Class.forName("org.postgresql.Driver");
+			this.connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Ecommerce","postgres","masterkey");
+			Statement stmt = this.connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){  
+				result = rs.getString(1);  
+			}  
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+		
+	}
+	
 	
 	/* this function returns the JSON embedded in the buffer reader from
 	 * HttpServletRequest of each servlet method i put this here in order to re-use code
-	 * ( found this function on internet */
+	 * ( found this function on internet ) */
 	JSONObject retrieveJson (HttpServletRequest request) throws IOException {
 		StringBuilder sb = new StringBuilder();
 	    BufferedReader reader = request.getReader();

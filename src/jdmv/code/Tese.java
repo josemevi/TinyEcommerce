@@ -1,5 +1,7 @@
 package jdmv.code;
 
+import java.sql.SQLException;
+
 public class Tese {
 	
 	static DBConnection Dbc = new DBConnection();
@@ -13,8 +15,8 @@ public class Tese {
 		}				
 	}
 
-	public static void main(String[] args) {
-		//Dbc.execSql("SELECT email, password FROM users WHERE email= 'admin'");
+	public static void main(String[] args) throws SQLException {
+		System.out.println(Dbc.getJSONFromDB("SELECT items  FROM cart WHERE user_id=5"));		
 		//System.out.println(Dbc.getData());
 		/*System.out.println("INSERT INTO users (document_type, document_number, direction, ccNumber) "
 				+ "VALUES ("+document_type+","+con.simpleQuoted(document_number)+","
