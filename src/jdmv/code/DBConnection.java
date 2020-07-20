@@ -133,7 +133,11 @@ public class DBConnection {
 	}
 	
 	String doubleQuoted(String value){
-		return "\""+value+"\"";
+		if(value == null || value.equals("undefined")) {
+			return null;
+		}else {
+			return "\""+value+"\"";
+		}
 	}
 	
 	/* 
