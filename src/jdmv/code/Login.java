@@ -52,13 +52,13 @@ public class Login extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
-		String email = request.getParameter("email").toString();
-		String password = request.getParameter("password").toString();
-		//JSONObject requestJson = con.retrieveJson(request);		
-		JSONObject json = new JSONObject();
+		//String email = request.getParameter("email");
+		//String password = request.getParameter("password");
+		JSONObject requestJson = con.retrieveJson(request);
+		JSONObject json = new JSONObject();		
 		if(session == null) {			
-			//String email = requestJson.get("email").toString();
-			//String password = requestJson.get("password").toString();			
+			String email = requestJson.get("email").toString();
+			String password = requestJson.get("password").toString();			
 						
 			if(con.execSql("SELECT user_id, email, password, rol_type FROM users WHERE email= "+con.simpleQuoted(email)) == 1) {
 				JSONObject result = new JSONObject(con.getData());
@@ -66,12 +66,13 @@ public class Login extends HttpServlet {
 					response.setStatus(200);					
 					session = request.getSession();
 					session.setAttribute("userId", result.get("user_id"));
-					session.setAttribute("rolId", result.get("rol_type"));
+					session.setAttribute("rolId", result.get("rol_type"));					
 					GetCartInfo(result.getString("user_id"));
+					session.setAttribute("cart", cart.get("items"));
 					json.put("login", true);
 					json.put("userId", result.get("user_id"));
 					json.put("rol", result.get("rol_type"));
-					json.put("cart", cart.get("items"));
+					json.put("cart", cart.get("items"));					
 				}else {
 					response.setStatus(401);
 					json.put("login", false);
@@ -84,7 +85,10 @@ public class Login extends HttpServlet {
 			}
 		}else {
 			response.setStatus(200);
-			json.put("login", true);
+			json.put("login", true);			
+			json.put("userId", session.getAttribute("userId"));
+			json.put("rol", session.getAttribute("rol"));
+			json.put("cart", session.getAttribute("cart"));
 			json.put("msg", "Already logged");
 		}
 		

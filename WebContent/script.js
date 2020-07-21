@@ -2,20 +2,105 @@ angular.module('Ecommerce', [])
   .controller('EcommerceController', function($scope, $http) {
 
     $scope.login = false;
+    $scope.userId = "";
+    $scope.userCart = [];
+
+    $scope.signup = false;
+    $scope.categories = [];
+
+    $scope.user = {
+      email : '',
+      password : '',
+      repassword: ''
+    }
 
     $scope.getCategories = function (){
       let data = {
         method: 'GET',
         url: 'http://localhost:8080/Tiny_Ecommerce/getCategories'
       }
-      $http(data).then(function successCallback(response) {
-          console.log(response);              
+      $http(data).then(function successCallback(response) {          
+          $scope.categories = response.data.categories;            
           }, function errorCallback(response) {
-            console.log(response)
+            console.log(response);            
           }
         );
     }
     $scope.getCategories();
+
+    $scope.showCategory = function (catId){
+      console.log(catId);
+    }
+
+    $scope.goToSex = function (value){
+      if (value == 0){
+        console.log("male");
+      } else {
+        console.log("female");
+      }
+    }
+
+    $scope.toggleModal = function (option){   
+      console.log(option)   
+      $('#modal').modal('show');
+    }
+
+    $scope.toggleSignUp = function (){
+      $scope.signup = true;
+    }
+
+    $scope.cancelSignUp = function() {
+      $scope.signup = false;
+    }
+
+    $scope.signIn = function(){
+      console.log ($scope.user);
+      let data = {
+        method: 'POST',        
+        url: 'http://localhost:8080/Tiny_Ecommerce/login',
+        data : {"email": $scope.user.email, "password": $scope.user.password},
+      }      
+      $http(data).then(function successCallback(response) {
+        console.log(response)          
+            if(response.data.login){
+              $scope.login = true;
+              $scope.userId = response.data.userId;
+              $scope.userCart = response.data.cart;
+              console.log($scope.userId, $scope.userCart);
+              $("#modal .close").click();
+            }            
+          }, function errorCallback(response) {
+            console.log(response);
+            alert(response.data.msg)            
+          }
+        );
+    }
+    $scope.signIn();
+
+    $scope.signUp = function(){
+      console.log ($scope.user);
+    }
+
+    $scope.logout = function(){
+      let data = {
+        method: 'GET',        
+        url: 'http://localhost:8080/Tiny_Ecommerce/logout',        
+      }      
+      $http(data).then(function successCallback(response) {
+        console.log(response)          
+            if(!response.data.login){
+              $scope.login = false;
+              $scope.userId = "";
+              $scope.userCart = "";              
+              $("#modal .close").click();
+            }            
+          }, function errorCallback(response) {
+            console.log(response);
+            alert(response.data.msg)            
+          }
+        );
+    }
+    
 
     // $scope.forma = {
     // 		name: '',
