@@ -22,6 +22,14 @@ public class AddOrder extends HttpServlet {
         super();
         
     }
+    
+    public boolean checkOrder (String orderId) {
+		if(con.execSql("SELECT cart_id FROM orders WHERE cart_id= "+con.simpleQuoted(orderId)) == 1) {
+			return true;
+		}else {
+			return false;
+		}			 
+   }
 
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -31,10 +39,9 @@ public class AddOrder extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		String cartId = request.getParameter("cartId");
-		JSONObject json = new JSONObject();
-		System.out.println(cartId);
+		JSONObject json = new JSONObject();		
 		if (session != null) {
-			if(con.checkString(cartId)) {			
+			if(con.checkString(cartId) && !checkOrder(cartId)) {			
 				if(con.execSql("UPDATE cart SET checkout="+true+" WHERE cart_id="+cartId) == 1){
 					if(con.execSql("INSERT INTO orders VALUES (DEFAULT, "+cartId+", DEFAULT)") == 1) {
 						response.setStatus(201);
@@ -45,7 +52,7 @@ public class AddOrder extends HttpServlet {
 					json.put("msg", "Server error");
 			    }		 
 			}else {
-				json.put("msg","Cart id is empty or invalid");
+				json.put("msg","Cart id is empty or invalid or already a order is created with this id");
 			}
 		}else {
 			response.setStatus(403);

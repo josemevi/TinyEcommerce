@@ -32,8 +32,8 @@ public class EditOrder extends HttpServlet {
 		if(!con.checkString(status)) {
 			status = "In Progress";
 		}
-		if(session != null) {	
-			if(con.checkString(orderId)) {
+		if(session != null && Integer.parseInt((String) session.getAttribute("rolId")) == 0) {	
+			if(con.checkString(orderId)) {				
 				if(con.execSql("UPDATE orders SET order_status="+con.simpleQuoted(status)+" WHERE order_id="+orderId) == 1) {
 					response.setStatus(200);
 					json.put("msg", "Order Updated");	
@@ -47,7 +47,7 @@ public class EditOrder extends HttpServlet {
 			}
 		}else {
 			response.setStatus(403);
-			json.put("msg", "Invalid Session please log in first");
+			json.put("msg", "Invalid Session or insufficient permissions");
 		}
 		response.getWriter().print(json.toString());
 	}

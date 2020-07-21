@@ -23,6 +23,7 @@ public class DBConnection {
 	 * (normally when a db connection is set is to execute a query), i made this 
 	 * function a long time ago back at my university days that's why i don't use JSONObject 
 	 * library, i tried to be the more independent from third party jars as possible */ 
+	@SuppressWarnings("unused")
 	int execSql(String query){
 		this.json = "";
 		status = 0;

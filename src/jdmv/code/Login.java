@@ -1,6 +1,8 @@
 package jdmv.code;
 
 import java.io.IOException;
+import java.sql.SQLException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -17,11 +20,28 @@ import org.json.JSONObject;
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	DBConnection con = new DBConnection();
+	JSONObject cart = new JSONObject();
   
      
     public Login() {
         super();
    
+    }
+    
+    public String GetCartInfo (String userId) {
+    	cart = new JSONObject();
+    	String result = "";
+    	try {
+			result = "{\"items\":"+con.getJSONFromDB("SELECT items  FROM cart WHERE user_id="+userId);
+			if(result.equals("{\"items\":")) {
+				result = "{\"items\":\"\""+"}";
+			}			
+			cart = new JSONObject(result+"}");			
+		} catch (JSONException | SQLException e) {
+		
+			e.printStackTrace();
+		}
+    	return result;
     }
 
 	
@@ -39,15 +59,19 @@ public class Login extends HttpServlet {
 		if(session == null) {			
 			//String email = requestJson.get("email").toString();
 			//String password = requestJson.get("password").toString();			
-			con.execSql("SELECT user_id, email, password FROM users WHERE email= "+con.simpleQuoted(email));			
-			if(con.getData().length() > 0) {
+						
+			if(con.execSql("SELECT user_id, email, password, rol_type FROM users WHERE email= "+con.simpleQuoted(email)) == 1) {
 				JSONObject result = new JSONObject(con.getData());
 				if(password.equals(result.get("password"))) {
-					response.setStatus(200);
-					json.put("login", true);
-					json.put("userId", result.get("user_id"));
+					response.setStatus(200);					
 					session = request.getSession();
 					session.setAttribute("userId", result.get("user_id"));
+					session.setAttribute("rolId", result.get("rol_type"));
+					GetCartInfo(result.getString("user_id"));
+					json.put("login", true);
+					json.put("userId", result.get("user_id"));
+					json.put("rol", result.get("rol_type"));
+					json.put("cart", cart.get("items"));
 				}else {
 					response.setStatus(401);
 					json.put("login", false);

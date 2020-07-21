@@ -45,7 +45,7 @@ public class EditCartItems extends HttpServlet {
     }*/
     
     public boolean CartCreated (String user_id) {
-		if(con.execSql("SELECT * FROM cart WHERE user_id= "+con.simpleQuoted(user_id)) == 1) {
+		if(con.execSql("SELECT * FROM cart WHERE user_id= "+con.simpleQuoted(user_id)+" AND checkout=false") == 1 ) {
 			return true;
 		}else {
 			return false;
