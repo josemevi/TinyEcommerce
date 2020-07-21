@@ -23,9 +23,22 @@ public class GetItems extends HttpServlet {
         
     }
     
-    public void GetTemplate (String param, String resultName, HttpServletResponse response) {    	
+    public void GetTemplate (String param, String catalogId, String resultName, String searchString, HttpServletResponse response) {    	
     	json = new JSONObject();
-    	if(con.execSql("SELECT * FROM items "+param) == 1) {
+    	String query = "";
+    	if(!con.checkString(searchString)){
+    		searchString = "";
+    	}
+    	if(con.checkString(catalogId) && con.checkString(param)) {
+    		query = "SELECT * FROM items "+param+" AND catalog_id="+catalogId+" AND name LIKE "+con.simpleQuoted("%"+searchString+"%");
+    	}else if (con.checkString(catalogId) && !con.checkString(param)) {
+    		query = "SELECT * FROM items WHERE catalog_id="+catalogId+" AND name LIKE "+con.simpleQuoted("%"+searchString+"%");
+    	}else if (!con.checkString(catalogId) && con.checkString(param)) {
+    		query = "SELECT * FROM items "+param+" AND name LIKE "+con.simpleQuoted("%"+searchString+"%");     		
+    	}else {
+    		query ="SELECT * FROM items WHERE name LIKE "+con.simpleQuoted("%"+searchString+"%");
+    	}    	    	
+    	if(con.execSql(query) == 1) {
 			JSONObject jsonRes = new JSONObject("{\""+resultName+"\":["+con.getData()+"]}");			
 			response.setStatus(200);
 			json.put(resultName, jsonRes.get(resultName));
@@ -41,35 +54,26 @@ public class GetItems extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String catalogId = request.getParameter("catalogId");
+		String searchItems = request.getParameter("searchString");
 		String mode = request.getParameter("mode");		
 		if(!con.checkString(mode)) {
 			mode = "";
 		}		
 		switch(mode){
 			case "highlights" : {
-				GetTemplate ("WHERE highlight = true", "highlights",response);
+				GetTemplate ("WHERE highlight = true", catalogId, "highlights", searchItems, response);
 				break;
 			}
 			case "male" : {
-				GetTemplate("WHERE gender = 0","items",response);
+				GetTemplate("WHERE gender = 0", catalogId, "items", searchItems, response);
 				break;
 			}
 			case "female": {
-				GetTemplate("WHERE gender = 1","items",response);
+				GetTemplate("WHERE gender = 1", catalogId, "items", searchItems, response);
 				break;
-			}
-			case "category": {
-				if(con.checkString(catalogId)) {
-					GetTemplate("WHERE catalog_id ="+catalogId, "items",response);					
-				}else {
-					json = new JSONObject();
-					response.setStatus(400);
-					json.put("msg", "catalog id is empty or invalid");
-				}
-				break;
-			}
+			}			
 			default : {
-				GetTemplate("", "items",response);
+				GetTemplate("", "", "items", searchItems, response);
 				break;
 			}			
 		}
