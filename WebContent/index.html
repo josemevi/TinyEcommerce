@@ -33,20 +33,11 @@
               <i class="material-icons" style="font-size:32px">shopping_cart</i>
               <span class='badge badge-warning' id='lblCartCount'> 3 </span>
             </a>             
-          </div>
-          <div class="d-inline-flex xs_size">
-                        
-              <!-- <div class="input-group">
-                <input class="form-control py-2 border-right-0 border" type="search" placeholder="search" id="example-search-input">
-                <span class="input-group-append">
-                    <div class="input-group-text bg-transparent"><i class="material-icons">search</i></div>
-                </span>
-            </div>                  -->
-          </div>
+          </div>          
         </div>
         </nav><br>
         <!-- Image Showcase-->        
-        <div class="show cointainer-fluid" id="carousel">
+        <!-- <div class="show cointainer-fluid" id="carousel">
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
                 <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -85,13 +76,55 @@
                 <span class="sr-only">Next</span>
                 </a>
             </div>
-        </div>
+        </div> -->
         <!-- Page Content -->
-        <div class="container-fluid">
+        <div class="container-fluid">            
+            <!-- Sex Selection Cards -->
+            <div class="container-md">
+                <div class="card-list" >
+                    <div class="card-container">                
+                        <div class="card" style="width: 35rem;" ng-click="goToSex(1)">
+                            <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80" class="card-img-top" alt="...">
+                            <div class="card-body" style="text-align: center;"> 
+                                <h4 class="card-title">Woman</h4>
+                                <div class="form-check">
+                                    <input class="form-check-input position-static" type="checkbox" ng-model="womanCheck" aria-label="...">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-container">                
+                        <div class="card" style="width: 35rem;" ng-click="goToSex(0)">
+                            <img src="https://images.unsplash.com/photo-1519027356316-9f99e11d8bac?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80" class="card-img-top" alt="...">
+                            <div class="card-body" style="text-align: center;">
+                                <h4 class="card-title">Man</h4>
+                                <div class="form-check">
+                                    <input class="form-check-input position-static" type="checkbox" ng-model="maleCheck" aria-label="...">
+                                </div>
+                            </div>
+                        </div>         
+                    </div>
+                </div>
+            </div><br>
+            <!-- Categories -->
+            <div class="container-fluid">
+                <div class="card-list">
+                    <div ng-repeat="cat in categories">
+                        <div class="card-container">                
+                            <div class="card" style="width: 20rem;" ng-click="showCategory(cat.catalog_id)">
+                                <img ng-src="{{cat.cover_img}}" class="card-img-top" alt="...">
+                                <div class="card-body" style="text-align: center;"> 
+                                    <h4 class="card-title">{{ cat.name }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                                        
+                </div>
+            </div><br>
             <!-- Search input -->
             <div class="container-md">
                 <div class="input-group">
-                    <input type="text" placeholder="Type Here To Search Items" class="form-control" aria-label="Type Here to Search Item">
+                    <input type="text" ng-model = "searchString" placeholder="Type Here To Search Items" class="form-control" aria-label="Type Here to Search Item" ng-change="getItems('')">
                     <div class="input-group-append"></div>
                         <select class="btn btn-outline-secondary dropdown-toggle" id="inputGroupSelect02">
                             <option selected>All</option>
@@ -106,43 +139,27 @@
                         <a class="dropdown-item" href="#">Man</a>
                     </div>
                     </div> -->
-            </div>
-            <!-- Sex Selection Cards -->
-            <div class="container-md">
-                <div class="card-list" >
-                    <div class="card-container">                
-                        <div class="card" style="width: 35rem;" ng-click="goToSex(1)">
-                            <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80" class="card-img-top" alt="...">
-                            <div class="card-body" style="text-align: center;"> 
-                                <h4 class="card-title">Woman</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-container">                
-                        <div class="card" style="width: 35rem;" ng-click="goToSex(0)">
-                            <img src="https://images.unsplash.com/photo-1519027356316-9f99e11d8bac?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80" class="card-img-top" alt="...">
-                            <div class="card-body" style="text-align: center;">
-                                <h4 class="card-title">Man</h4>
-                            </div>
-                        </div>         
-                    </div>
-                </div>
-            </div><br>
-            <!-- Categories -->
+            </div><br><br>
+            <!-- Items -->
             <div class="container-fluid">
-                <div class="categories-list">
-                    <div ng-repeat="cat in categories">
-                        <div class="card-container">                
-                            <div class="card" style="width: 20rem;" ng-click="showCategory(cat.catalog_id)">
-                                <img ng-src="{{cat.cover_img}}" class="card-img-top" alt="...">
-                                <div class="card-body" style="text-align: center;"> 
-                                    <h4 class="card-title">{{ cat.name }}</h4>
-                                </div>
+                <div class="catalog-list">
+                    <div ng-if="!noItems" ng-repeat="item in itemList">
+                        <div class="catalogs-container">                
+                            <div class="card" style="width: 17rem;">
+                                <img ng-src="{{item.images}}" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                  <h5 class="card-title">{{item.name}}</h5>
+                                  <p class="card-text">{{item.description}}</p>
+                                  <p class="card-text">{{item.price}}$</p>
+                                  <a href="#" class="btn btn-primary">Add to Cart</a>
                             </div>
                         </div>
                     </div>                                        
                 </div>
-            </div>
+                <div ng-if="noItems">
+                    <h1>No result</h1>
+                </div>
+            </div><br>
         </div>
         
         <!-- footer -->
@@ -200,8 +217,20 @@
                     <form ng-if="signup && !login">
                         <div class="form-group d-flex justify-content-center">
                             <div class="col-md-6">
+                                <label for="formGroupExampleInput4">Name</label>
+                                <input type="text" class="form-control" id="formGroupExampleInput4" ng-model = "user.name" placeholder="Name" ng-required>
+                            </div>
+                        </div>
+                        <div class="form-group d-flex justify-content-center">  
+                            <div class="col-md-6">
+                                <label for="formGroupExampleInput5">Lastname</label>
+                                <input type="text" class="form-control" id="formGroupExampleInput5" ng-model = "user.lastname" placeholder="Lastname" ng-required>
+                            </div>  
+                        </div>
+                        <div class="form-group d-flex justify-content-center">     
+                            <div class="col-md-6">
                                 <label for="formGroupExampleInput">Email</label>
-                                <input type="email" class="form-control" id="formGroupExampleInput" ng-model = "user.email" placeholder="Email" ng-required>
+                                <input type="text" class="form-control" id="formGroupExampleInput" ng-model = "user.email" placeholder="Email" ng-required> 
                             </div>                          
                         </div>
                         <div class="form-group d-flex justify-content-center">

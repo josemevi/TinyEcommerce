@@ -40,11 +40,16 @@ public class Signup extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
+		JSONObject requestJson = con.retrieveJson(request);
+		String email = requestJson.getString("email");
+		String password = requestJson.getString("password");
+		String name = requestJson.getString("name");
+		String lastName = requestJson.getString("lastname");
 		JSONObject json = new JSONObject();		
-		String email = request.getParameter("email");
-		String password = request.getParameter("password");
-		String name = request.getParameter("name");
-		String lastName = request.getParameter("lastName");
+		//String email = request.getParameter("email");
+		//String password = request.getParameter("password");
+		//String name = request.getParameter("name");
+		//String lastName = request.getParameter("lastName");
 		if(session == null) {
 			if(con.checkString(email) && con.checkString(password) && con.checkString(name) && con.checkString(lastName)) {
 				if(checkEmail(email)) {
