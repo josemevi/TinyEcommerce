@@ -57,8 +57,8 @@ public class Login extends HttpServlet {
 		JSONObject requestJson = con.retrieveJson(request);
 		JSONObject json = new JSONObject();		
 		if(session == null) {			
-			String email = requestJson.get("email").toString();
-			String password = requestJson.get("password").toString();			
+			String email = requestJson.getString("email");
+			String password = requestJson.getString("password");			
 						
 			if(con.execSql("SELECT user_id, email, password, rol_type FROM users WHERE email= "+con.simpleQuoted(email)) == 1) {
 				JSONObject result = new JSONObject(con.getData());

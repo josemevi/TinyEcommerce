@@ -31,3 +31,19 @@
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-gap: 10px;
   }
+
+  .catalog-list {
+    width: 65vw;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-gap: 20x;
+  }
+
+  .catalog-container {
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    padding: 25px;
+    backface-visibility: hidden;
+  }

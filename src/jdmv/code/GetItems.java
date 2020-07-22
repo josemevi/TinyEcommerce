@@ -30,14 +30,15 @@ public class GetItems extends HttpServlet {
     		searchString = "";
     	}
     	if(con.checkString(catalogId) && con.checkString(param)) {
-    		query = "SELECT * FROM items "+param+" AND catalog_id="+catalogId+" AND name LIKE "+con.simpleQuoted("%"+searchString+"%");
+    		query = "SELECT * FROM items "+param+" AND catalog_id="+catalogId+" AND LOWER(name) LIKE LOWER("+con.simpleQuoted("%"+searchString+"%")+")";
     	}else if (con.checkString(catalogId) && !con.checkString(param)) {
-    		query = "SELECT * FROM items WHERE catalog_id="+catalogId+" AND name LIKE "+con.simpleQuoted("%"+searchString+"%");
+    		query = "SELECT * FROM items WHERE catalog_id="+catalogId+" AND LOWER(name) LIKE LOWER("+con.simpleQuoted("%"+searchString+"%")+")";
     	}else if (!con.checkString(catalogId) && con.checkString(param)) {
-    		query = "SELECT * FROM items "+param+" AND name LIKE "+con.simpleQuoted("%"+searchString+"%");     		
+    		query = "SELECT * FROM items "+param+" AND LOWER(name) LIKE LOWER("+con.simpleQuoted("%"+searchString+"%")+")";     		
     	}else {
-    		query ="SELECT * FROM items WHERE name LIKE "+con.simpleQuoted("%"+searchString+"%");
-    	}    	    	
+    		query ="SELECT * FROM items WHERE LOWER(name) LIKE LOWER("+con.simpleQuoted("%"+searchString+"%")+")";
+    	}
+    	System.out.println(query);
     	if(con.execSql(query) == 1) {
 			JSONObject jsonRes = new JSONObject("{\""+resultName+"\":["+con.getData()+"]}");			
 			response.setStatus(200);
@@ -55,7 +56,8 @@ public class GetItems extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String catalogId = request.getParameter("catalogId");
 		String searchItems = request.getParameter("searchString");
-		String mode = request.getParameter("mode");		
+		String mode = request.getParameter("mode");
+		System.out.println(catalogId);		
 		if(!con.checkString(mode)) {
 			mode = "";
 		}		
@@ -71,7 +73,11 @@ public class GetItems extends HttpServlet {
 			case "female": {
 				GetTemplate("WHERE gender = 1", catalogId, "items", searchItems, response);
 				break;
-			}			
+			}
+			case "category" : {
+				GetTemplate("", catalogId, "items", searchItems, response);
+				break;
+			}
 			default : {
 				GetTemplate("", "", "items", searchItems, response);
 				break;
