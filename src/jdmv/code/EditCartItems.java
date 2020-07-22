@@ -68,6 +68,7 @@ public class EditCartItems extends HttpServlet {
 				if(con.execSql("UPDATE cart SET items="+con.simpleQuoted(items)+" WHERE user_id="+session.getAttribute("userId")) == 1){
 					response.setStatus(200);
 					json.put("msg", "Cart Modified");
+					session.setAttribute("cart", requestB.get("items"));
 			    }else{
 			    	response.setStatus(500);
 					json.put("msg", "Server error");
@@ -76,6 +77,7 @@ public class EditCartItems extends HttpServlet {
 				if(con.execSql("INSERT INTO cart values (DEFAULT, "+con.simpleQuoted(items)+", "+" DEFAULT, "+session.getAttribute("userId")+")") == 1){
 					response.setStatus(201);
 					json.put("msg", "Cart Created");
+					session.setAttribute("cart", requestB.get("items"));
 			    }else{
 			    	response.setStatus(500);
 					json.put("msg", "Server error");
