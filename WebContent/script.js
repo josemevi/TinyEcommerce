@@ -10,6 +10,8 @@ angular.module('Ecommerce', [])
     $scope.itemList = [];
     $scope.userCart = [];
     $scope.categories = [];
+    $scope.userData = [];
+    $scope.docTypes = [];
 
     $scope.maleCheck = false;
     $scope.womancheck = false;
@@ -21,7 +23,11 @@ angular.module('Ecommerce', [])
       lastname : '',
       email : '',
       password : '',
-      repassword: ''
+      repassword: '',
+      docType: '',
+      docNumber: '',
+      direction: '',
+      ccNumber: '',
     }
 
     $scope.getCategories = function (){
@@ -98,8 +104,12 @@ angular.module('Ecommerce', [])
     // }
 
     $scope.toggleModal = function (option){   
-      console.log(option)   
-      $('#modal').modal('show');
+      if(option == 0 ){
+        $('#modal').modal('show');
+      }else if (option == 1){
+        $scope.getUserInfo();
+        $scope.getDocTypes();        
+      }   
     }
 
     $scope.toggleSignUp = function (){
@@ -201,7 +211,7 @@ angular.module('Ecommerce', [])
         url: 'http://localhost:8080/Tiny_Ecommerce/logout',        
       }      
       $http(data).then(function successCallback(response) {
-        console.log(response)          
+            console.log(response)          
             if(!response.data.login){
               $("#modal .close").click();
               $scope.login = false;
@@ -214,129 +224,87 @@ angular.module('Ecommerce', [])
           }
         );
     }
+    var oldpassword = ""
+    $scope.getUserInfo = function (){
+      let data = {
+        method: 'GET',        
+        url: 'http://localhost:8080/Tiny_Ecommerce/getUserInfo',        
+      }      
+      $http(data).then(function successCallback(response) {          
+            console.log(response);
+            if(response.status == 200){
+              $scope.userData = response.data.userData;
+              $scope.user.ccNumber = response.data.userData.cc_number;
+              $scope.user.direction = response.data.userData.direction;
+              $scope.user.docType = response.data.userData.document_type;
+              $scope.user.docNumber = response.data.userData.document_number;
+              $scope.user.email = response.data.userData.email;
+              $scope.user.lastname = response.data.userData.lastname;
+              $scope.user.name = response.data.userData.name;
+              oldpassword = response.data.userData.password;
+              $('#modalUser').modal('show');
+            }          
+          }, function errorCallback(response) {
+            console.log(response);
+            alert(response.data.msg)            
+          }
+        );
+    }
+
+    $scope.editUserInfo = function (){
+      console.log($scope.user);
+      let flag = true;
+      if($scope.user.password.length == 0){
+        flag = false;
+        $scope.user.password = oldpassword;
+      }
+      if(!flag || $scope.user.password.localeCompare($scope.user.repassword) == 0){
+        let data = {
+          method: 'PUT',        
+          url: 'http://localhost:8080/Tiny_Ecommerce/editUserInfo',
+          data: {
+            "email": $scope.user.email,
+            "password" : $scope.user.password,
+            "name" : $scope.user.name,
+            "lastName" : $scope.user.lastname,
+            "document_type" : $scope.user.docType,
+            "document_number" : $scope.user.docNumber,
+            "direction" : $scope.user.direction,
+            "ccNumber" : $scope.user.ccNumber
+          }        
+        }      
+        $http(data).then(function successCallback(response) {
+          console.log(response)          
+              if(response.status == 200){                
+                alert("Information Updated");
+                $("#modalUser .close").click();
+              }            
+            }, function errorCallback(response) {
+              console.log(response);
+              alert(response.data.msg)            
+            }
+          );
+      }else {
+        alert("Password doesn't match")
+      }      
+    }
     
-
-    // $scope.forma = {
-    // 		name: '',
-    // 		surname: '',
-    // 		active: false,
-    // 		email: '',
-    // 		city_id: '',
-    // 		bdate: '',
-    // 		date: ''
-    // }
-    // $scope.city = {
-    //   name : ''
-    // };
-    // $scope.userData = [];
-    // $scope.citiesData = [];
-    // $scope.citiesDataInput = [];
-    // $scope.filterUserData = [];
-    // $scope.flag = false;   
-
-    // $scope.requestWrap = function (data){
-    //   $http(data).then(function successCallback(response) {
-    //     console.log(response.data);
-    //       if(response.data == 1){
-    //         $scope.flag = true;
-    //       }else {
-    //         //alert("Please confirm you've accepted terms and conditions");
-    //       }
-    //     }, function errorCallback(response) {
-    //       console.log(response)
-    //     }
-    //   );        
-    // }
-    
-    // $scope.terms = function(selected, memory){
-    //   var data = {
-    //     method: 'GET',
-    //     url: 'http://localhost:8080/testBE_JM/disclaimer'
-    //   }
-    //   if(selected){
-    //     data.url += "?acpt=true"
-    //     console.log(data);
-    //    $scope.requestWrap(data);
-    //   }else if (memory){
-    //     $scope.requestWrap(data);
-    //   }else{
-    //     $scope.flag = false;
-    //     alert("You must accept terms and conditions in order to continue");
-    //   }
-    // }
-    // $scope.terms(false,true);
-
-    // $scope.getActiveUser = function () {
-    //   $http({
-    //     method: 'GET',
-    //     url: 'http://localhost:8080/testBE_JM/userList'
-    //   }).then(function successCallback(response) {
-    //     console.log(response);
-    //       $scope.userData = response.data
-    //     }, function errorCallback(response) {
-    //       console.log(response)
-    //     }
-    //   );        
-    // }
-    // $scope.getActiveUser();
-
-    
-    // $scope.getCities = function (fTime){      
-    //   $http({
-    //     method: 'POST',
-    //     url: 'http://localhost:8080/testBE_JM/cities',
-    //     data: {city_name : $scope.city.name}
-    //   }).then(function successCallback(response) {
-    //     console.log(response);
-    //     if(fTime){
-    //       $scope.citiesDataInput = response.data;
-    //     }else {
-    //       $scope.citiesData = response.data
-    //     }          
-    //     }, function errorCallback(response) {
-    //       console.log(response)
-    //     }
-    //   );        
-    // }
-    // $scope.getCities(true);
-
-    // $scope.filterUsers = function (mode){
-    //   $http({
-    //     method: 'POST',
-    //     url: 'http://localhost:8080/testBE_JM/userList',
-    //     data: {order: mode}
-    //   }).then(function successCallback(response) {
-    //     console.log(response);
-    //       $scope.filterUserData = response.data
-    //     }, function errorCallback(response) {
-    //       console.log(response)
-    //     }
-    //   );
-    // }
-  
-    
-    // $scope.create = function (){
-    //   console.log($scope.forma)
-    //   $http({
-    //     method: 'POST',
-    //     url: 'http://localhost:8080/testBE_JM/newUser',
-    //     data: $scope.forma
-    //   }).then(function successCallback(response) {
-    //     console.log(response);
-    //     alert("User Created!")          
-    //     }, function errorCallback(response) {
-    //       console.log(response)          
-    //       alert(response.data.msg);
-    //     }
-    //   );
-
-      
-    //}
-
-
+    $scope.getDocTypes = function () {
+      let data = {
+        method: 'GET',        
+        url: 'http://localhost:8080/Tiny_Ecommerce/getDocumentTypes',        
+      }      
+      $http(data).then(function successCallback(response) {        
+            console.log(response);
+            if(response.status == 200){
+              $scope.docTypes = response.data.documents;
+            }              
+          }, function errorCallback(response) {
+            console.log(response);
+            alert(response.data.msg)            
+          }
+        );    
+    }
     
     
-
-
-  
   });

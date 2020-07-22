@@ -31,14 +31,15 @@ public class EditUserInfo extends HttpServlet {
 	
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
+		JSONObject requestJson = con.retrieveJson(request);
 		Signup mail = new Signup();
-		String email = request.getParameter("email");
-		String name = request.getParameter("name");
-		String lastName = request.getParameter("lastName");
-		String document_type = request.getParameter("document_type").toString();
-		String document_number = request.getParameter("document_number").toString();
-		String direction = request.getParameter("direction").toString();
-		String ccNumber = request.getParameter("ccNumber").toString();
+		String email = requestJson.getString("email");
+		String name = requestJson.getString("name");
+		String lastName = requestJson.getString("lastName");
+		String document_type = requestJson.getString("document_type").toString();
+		String document_number = requestJson.getString("document_number").toString();
+		String direction = requestJson.getString("direction").toString();
+		String ccNumber = requestJson.getString("ccNumber").toString();
 		if(!con.checkString(document_type)) {
 			document_type = null;
 		}

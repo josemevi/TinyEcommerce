@@ -37,8 +37,7 @@ public class GetItems extends HttpServlet {
     		query = "SELECT * FROM items "+param+" AND LOWER(name) LIKE LOWER("+con.simpleQuoted("%"+searchString+"%")+")";     		
     	}else {
     		query ="SELECT * FROM items WHERE LOWER(name) LIKE LOWER("+con.simpleQuoted("%"+searchString+"%")+")";
-    	}
-    	System.out.println(query);
+    	}    	
     	if(con.execSql(query) == 1) {
 			JSONObject jsonRes = new JSONObject("{\""+resultName+"\":["+con.getData()+"]}");			
 			response.setStatus(200);
@@ -56,8 +55,7 @@ public class GetItems extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String catalogId = request.getParameter("catalogId");
 		String searchItems = request.getParameter("searchString");
-		String mode = request.getParameter("mode");
-		System.out.println(catalogId);		
+		String mode = request.getParameter("mode");			
 		if(!con.checkString(mode)) {
 			mode = "";
 		}		
