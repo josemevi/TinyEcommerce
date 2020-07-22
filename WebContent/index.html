@@ -20,19 +20,42 @@
 <body>    
     <div ng-controller="EcommerceController as controller">
         <!-- Navigation Bar -->
-        <nav class="navbar sticky-top navbar-expand-xs navbar-light bg-light justify-content-between">
-        <a class="navbar-brand" href="#">
-          <h3>Tiny Ecommerce</h3>          
-        </a> 
+        <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Tiny Ecommerce</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item" ng-click="toggleModal(1)">
+                <a style="color:cornflowerblue; cursor: pointer;" class="nav-link">Profile</a>
+              </li>             
+              <li class="nav-item">
+                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Orders</a>
+              </li>
+            </ul>
+            
+          </div>                 
         <div>
-          <div class="d-inline md_size">
-            <span style="font-size: 24px;" ng-if="!login">Hello Stranger!</span>            
+          <div class="navbar-nav mr-auto">
+            
+            <div class="nav-item" ng-click="toggleModal(0)" style="cursor: pointer;">
+                <span class="nav-link" ng-if="!login">Hello Stranger!</span>                                
+            </div>
+            <div class="nav-item">           
             <i ng-click="toggleModal(0)" ng-if="!login" style="cursor: pointer;font-size:32px;padding-left: 0px;padding-right: 10px; color: red;" class="material-icons">person_pin</i>
-            <i ng-click="toggleModal(1)" ng-if="login" style="cursor: pointer;font-size:32px;padding-left: 0px;padding-right: 10px; color: green;" class="material-icons">person_pin</i>
+            <i ng-click="toggleModal(0)" ng-if="login" style="cursor: pointer;font-size:32px;padding-left: 0px;padding-right: 10px; color: green;" class="material-icons">person_pin</i>
+            </div>
+            <div class="nav-item">
             <a ng-click="toggleModal(2)" style="cursor: pointer;" class="text-primary" href="#">
               <i class="material-icons" style="font-size:32px">shopping_cart</i>
               <span class='badge badge-warning' id='lblCartCount'> 3 </span>
-            </a>             
+            </a>      
+              </div>     
           </div>          
         </div>
         </nav><br>
@@ -125,20 +148,14 @@
             <div class="container-md">
                 <div class="input-group">
                     <input type="text" ng-model = "searchString" placeholder="Type Here To Search Items" class="form-control" aria-label="Type Here to Search Item" ng-change="getItems('')">
-                    <div class="input-group-append"></div>
+                    <div class="input-group-append">
                         <select class="btn btn-outline-secondary dropdown-toggle" id="inputGroupSelect02">
                             <option selected>All</option>
                             <option value="1">Woman</option>
                             <option value="2">Male</option>                        
                         </select>
                     </div>
-                    <!-- <div class="input-group-append">
-                    <select class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All</button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Woman</a>
-                        <a class="dropdown-item" href="#">Man</a>
-                    </div>
-                    </div> -->
+                </div>                    
             </div><br><br>
             <!-- Items -->
             <div class="container-fluid">
@@ -166,7 +183,7 @@
         <div class="footer-copyright text-center py-3">© 2020 Copyright:
             <a href="https://github.com/josemevi"> José David Melian Villalobos</a>
         </div>
-        <!-- signup / login / logout modal -->
+        <!-- signup / login / logout Modal -->
         <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content">
@@ -209,8 +226,8 @@
                         </div>
                         <div class="form-group d-flex justify-content-center">
                             <div class="col-auto center" >
-                                <button type="button" class="btn btn-success" ng-click="logout()">Yes</button>                               
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" ng-click="logout()">Yes</button>                               
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                             </div>            
                         </div>
                     </form>
@@ -258,7 +275,88 @@
                 </div>
               </div>
             </div>
-          </div>
+        </div>
+        <!-- User Info Modal-->
+        <div class="modal fade" id="modalUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="display-4" id="exampleModalLabel2" style="font-size: 36px;">User Information</h5>
+                  <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">                                       
+                    <form>
+                        <div class="form-group d-flex justify-content-center">
+                            <div class="col-md-6">
+                                <label for="formGroupExampleInput4">Name *</label>
+                                <input type="text" class="form-control" ng-model = "user.name" placeholder="Name" ng-required>
+                            </div>
+                        </div>
+                        <div class="form-group d-flex justify-content-center">  
+                            <div class="col-md-6">
+                                <label for="formGroupExampleInput5">Lastname *</label>
+                                <input type="text" class="form-control" ng-model = "user.lastname" placeholder="Lastname" ng-required>
+                            </div>  
+                        </div>
+                        <div class="form-group d-flex justify-content-center">     
+                            <div class="col-md-6">
+                                <label for="formGroupExampleInput0">Email *</label>
+                                <input type="text" class="form-control" ng-model = "user.email" placeholder="Email" ng-required> 
+                            </div>                          
+                        </div>
+                        <div class="form-group d-flex justify-content-center">
+                            <div class="col-md-6">
+                                <label for="formGroupExampleInput2">New Password</label>
+                                <input type="password" class="form-control" ng-model = "user.password" placeholder="Password" ng-required>
+                            </div>            
+                        </div>
+                        <div class="form-group d-flex justify-content-center">
+                            <div class="col-md-6">
+                                <label for="formGroupExampleInput3">Repeat New Password</label>
+                                <input type="password" class="form-control"  ng-model = "user.repassword" placeholder="Repeat Password" ng-required>
+                            </div>            
+                        </div>
+                        <div class="form-group d-flex justify-content-center">
+                            <div class="col-md-6">
+                                <label>Document</label>
+                                <div class="input-group">
+                                    <div class="input-group-append">
+                                        <select class="btn btn-outline-secondary dropdown-toggle" ng-model = "user.docType">
+                                            <option ng-repeat="doc in docTypes" value="{{doc.document_id}}">{{doc.name}}</option>                                                                                                                                   
+                                        </select>
+                                    </div>
+                                    <input type="text" ng-model = "user.docNumber" placeholder="Document Number" class="form-control" aria-label="Document Bumber">                                    
+                                </div>
+                            </div>                                                               
+                        </div>
+                        <div class="form-group d-flex justify-content-center">
+                            <div class="col-md-6">
+                                <label for="formGroupExampleInput3">Shipment Direction</label>
+                                <input type="text" class="form-control" ng-model = "user.direction" placeholder="Shipment Direction" ng-required>
+                            </div>            
+                        </div>
+                        <div class="form-group d-flex justify-content-center">
+                            <div class="col-md-6">
+                                <label for="formGroupExampleInput3">Credit Card Number</label>
+                                <input type="text" class="form-control" ng-model = "user.ccNumber" placeholder="Credit Card Number" ng-required>
+                            </div>            
+                        </div>                        
+                        <div class="form-group d-flex justify-content-center">
+                            <div class="col-auto center" >
+                                <button type="button" class="btn btn-primary" ng-click="editUserInfo()">Edit</button>
+                                <button type="button" class="btn btn-secondary" ng-click="cancelSignUp()" data-dismiss="modal">Cancel</button>                              
+                            </div>            
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>                  
+                </div>
+              </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
