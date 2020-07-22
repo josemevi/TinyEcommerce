@@ -32,7 +32,8 @@ public class Login extends HttpServlet {
     	cart = new JSONObject();
     	String result = "";
     	try {
-			result = "{\"items\":"+con.getJSONFromDB("SELECT items  FROM cart WHERE user_id="+userId);
+			result = "{\"items\":"+con.getJSONFromDB("SELECT items  FROM cart WHERE user_id="+userId+" AND checkout=false");
+			System.out.println(result);
 			if(result.equals("{\"items\":")) {
 				result = "{\"items\":\"\""+"}";
 			}			
@@ -85,11 +86,12 @@ public class Login extends HttpServlet {
 			}
 		}else {
 			response.setStatus(200);
+			GetCartInfo(session.getAttribute("userId").toString());
 			json.put("login", true);			
 			json.put("userId", session.getAttribute("userId"));
 			json.put("rol", session.getAttribute("rol"));
-			json.put("cart", session.getAttribute("cart"));
 			json.put("msg", "Already logged");
+			session.setAttribute("cart", cart.get("items"));
 		}
 		
 		response.getWriter().print(json.toString());

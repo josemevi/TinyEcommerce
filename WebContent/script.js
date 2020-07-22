@@ -4,8 +4,11 @@ angular.module('Ecommerce', [])
     $scope.signup = false;
     $scope.login = false;
     $scope.noItems = false;
+    $scope.payment = false;
 
     $scope.userId = "";
+    $scope.cartId = "";
+    $scope.payTotal = 0;
 
     $scope.itemList = [];
     $scope.userCart = [];
@@ -15,6 +18,7 @@ angular.module('Ecommerce', [])
 
     $scope.maleCheck = false;
     $scope.womancheck = false;
+    $scope.confirmPay = false;
 
     $scope.searchString = "";
 
@@ -145,9 +149,12 @@ angular.module('Ecommerce', [])
               $("#modal .close").click();
               $scope.login = true;
               $scope.userId = response.data.userId;
-              if(response.data.cart.length > 0){                			
-                $scope.userCart = response.data.cart;
-              }              
+              if(response.data.cart){
+                if(response.data.cart.length > 0){                			
+                  $scope.userCart = response.data.cart;
+                  $scope.total();
+                }      
+              }                      
               $scope.cleanUserData();             
             }            
           }, function errorCallback(response) {
@@ -169,9 +176,12 @@ angular.module('Ecommerce', [])
             if(response.data.login){
               $scope.login = true;
               $scope.userId = response.data.userId;
-              if(response.data.cart.length > 0){
-                $scope.userCart = response.data.cart;
-              }
+              if(response.data.cart){
+                if(response.data.cart.length > 0){
+                  $scope.userCart = response.data.cart;
+                  $scope.total();
+                }
+              }              
               $scope.cleanUserData();
               console.log($scope.userId, $scope.userCart);             
             }            
@@ -223,7 +233,7 @@ angular.module('Ecommerce', [])
               $("#modal .close").click();
               $scope.login = false;
               $scope.userId = "";
-              $scope.userCart = "";                            
+              $scope.userCart = [];                            
             }            
           }, function errorCallback(response) {
             console.log(response);
@@ -342,12 +352,12 @@ angular.module('Ecommerce', [])
           method: 'POST',        
           url: 'http://localhost:8080/Tiny_Ecommerce/editCartItems',
           data : "{\"items\":"+JSON.stringify($scope.userCart)+"}"       
-        }
-        console.log(data);      
+        }              
         $http(data).then(function successCallback(response) {        
               console.log(response);
               if(response.status == 200 || response.status == 201){                
                 alert(response.data.msg);
+                $scope.total();
               }              
             }, function errorCallback(response) {
               console.log(response);
@@ -363,18 +373,75 @@ angular.module('Ecommerce', [])
           method: 'POST',        
           url: 'http://localhost:8080/Tiny_Ecommerce/editCartItems',
           data : "{\"items\":"+JSON.stringify($scope.userCart)+"}"       
-        }
-        console.log(data);      
+        }             
         $http(data).then(function successCallback(response) {        
               console.log(response);
-              if(response.status == 200 || response.status == 201){                
-                alert(response.data.msg);
+              if(response.status == 200 || response.status == 201){
+                $scope.total();                
+                alert(response.data.msg);                
               }              
             }, function errorCallback(response) {
               console.log(response);
               alert(response.data.msg)            
             }
           );    
-    }
+      }
+
+      $scope.total = function () {
+        $scope.payTotal = 0;
+        for(let i = 0 ; i < $scope.userCart.length; i++){
+          $scope.payTotal = parseFloat($scope.userCart[i].price)*$scope.userCart[i].amount + $scope.payTotal;          
+        }
+      }
+  
+
+
+      $scope.getCart = function(){
+        let data = {
+          method: 'GET',        
+          url: 'http://localhost:8080/Tiny_Ecommerce/getCart'          
+        }                 
+        $http(data).then(function successCallback(response) {        
+              console.log(response);
+              if(response.status == 200){                
+                $scope.cartId = response.data.cart_id;                
+              }
+              console.log($scope.cartId);              
+            }, function errorCallback(response) {
+              console.log(response);
+              alert(response.data.msg)            
+            }
+          );    
+      }     
+
+      $scope.pay = function () {
+        $scope.getCart();
+        $scope.payment = true;
+      }
+
+      $scope.back = function () {
+        $scope.payment = false;
+      }
+
+      $scope.checkout = function () {
+        let data2 = {
+          method: 'POST',        
+          url: 'http://localhost:8080/Tiny_Ecommerce/addOrder',
+          data: {"cartId" : $scope.cartId}          
+        }   
+        $http(data2).then(function successCallback(response) {        
+          console.log(response);
+          if(response.status == 201){
+            $scope.userCart = [];                
+            alert(response.data.msg);
+            $("#modalCart .close").click();
+          }                          
+        }, function errorCallback(response) {
+          console.log(response);
+          alert(response.data.msg)            
+        });
+      }
+
+     
     
   });

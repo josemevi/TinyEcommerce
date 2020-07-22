@@ -48,6 +48,7 @@ public class EditCartItems extends HttpServlet {
 		if(con.execSql("SELECT * FROM cart WHERE user_id= "+con.simpleQuoted(user_id)+" AND checkout=false") == 1 ) {
 			return true;
 		}else {
+			
 			return false;
 		}			 
    }
@@ -64,8 +65,8 @@ public class EditCartItems extends HttpServlet {
 		String items = requestB.get("items").toString();		
 		JSONObject json = new JSONObject();
 		if(session != null) {		
-			if(CartCreated(session.getAttribute("userId").toString())) {								
-				if(con.execSql("UPDATE cart SET items="+con.simpleQuoted(items)+" WHERE user_id="+session.getAttribute("userId")) == 1){
+			if(CartCreated(session.getAttribute("userId").toString())) {				
+				if(con.execSql("UPDATE cart SET items="+con.simpleQuoted(items)+" WHERE user_id="+session.getAttribute("userId")+" AND checkout=false") == 1){					
 					response.setStatus(200);
 					json.put("msg", "Cart Modified");
 					session.setAttribute("cart", requestB.get("items"));

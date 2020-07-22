@@ -38,12 +38,16 @@ public class AddOrder extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
-		String cartId = request.getParameter("cartId");
+		//String cartId = request.getParameter("cartId");
+		JSONObject requestB = con.retrieveJson(request);
+		String cartId = requestB.getString("cartId");
+		System.out.println(cartId);
 		JSONObject json = new JSONObject();		
 		if (session != null) {
 			if(con.checkString(cartId) && !checkOrder(cartId)) {			
 				if(con.execSql("UPDATE cart SET checkout="+true+" WHERE cart_id="+cartId) == 1){
 					if(con.execSql("INSERT INTO orders VALUES (DEFAULT, "+cartId+", DEFAULT)") == 1) {
+						session.removeAttribute("cart");						
 						response.setStatus(201);
 						json.put("msg", "Order Created");
 					}
