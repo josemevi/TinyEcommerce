@@ -11,7 +11,9 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 
 /**
- * Servlet implementation class UserPaymentInfo
+ * This servlets manages all the extra information provided by the users 
+ * there's no direct restriction between direction, ccNumber at the time of making orders
+ * Because it will cause a caotic data flow and we're not really paying or sendind anything yet
  */
 @WebServlet("/editUserInfo")
 public class EditUserInfo extends HttpServlet {

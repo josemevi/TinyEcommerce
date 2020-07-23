@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 /**
- * Servlet implementation class GetDocumentTypes
+ * This servlet provides all the document_types inside the "document_types" table. I decided to do this in order to adapt more identifications
+ * types in the future, or in the case the current document types doesn't match in the current country (e.g In Venezuela is used CI instead of DNI / NIE)
+ * this make the system scalable and easy adaptive.
  */
 @WebServlet("/getDocumentTypes")
 public class GetDocumentTypes extends HttpServlet {

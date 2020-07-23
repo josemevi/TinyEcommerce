@@ -161,7 +161,7 @@ public class DBConnection {
 	}
 	
 	/* 
-	 * Evalues a String for empty, null or udefined values
+	 * Evalues a String for empty, null or undefined values
 	 */
 	public boolean checkString(String var) {
 		if(var != null && !var.isEmpty() && !var.equals("undefined")) {

@@ -9,12 +9,14 @@ angular.module('Ecommerce', [])
     $scope.userId = "";
     $scope.cartId = "";
     $scope.payTotal = 0;
+    $scope.orderStatus = [],
 
     $scope.itemList = [];
     $scope.userCart = [];
     $scope.categories = [];
     $scope.userData = [];
     $scope.docTypes = [];
+    $scope.orderData = [];
 
     $scope.maleCheck = false;
     $scope.womancheck = false;
@@ -28,8 +30,8 @@ angular.module('Ecommerce', [])
       email : '',
       password : '',
       repassword: '',
-      docType: '',
-      docNumber: '',
+      docType: 0,
+      docNumber: 0,
       direction: '',
       ccNumber: '',
     }
@@ -113,8 +115,10 @@ angular.module('Ecommerce', [])
       }else if (option == 1){
         $scope.getUserInfo();
         $scope.getDocTypes();        
-      } else {
+      } else  if (option == 2){
         $('#modalCart').modal('show');
+      } else {
+        $scope.getOrders(false);        
       }   
     }
 
@@ -210,7 +214,7 @@ angular.module('Ecommerce', [])
               if(response.status == 201){
                 $scope.signup = false;
                 $scope.cleanUserData();
-                alert("Please Log In");
+                alert("Account Created Please Log In");
               }            
             }, function errorCallback(response) {
               console.log(response);
@@ -251,10 +255,18 @@ angular.module('Ecommerce', [])
             console.log(response);
             if(response.status == 200){
               $scope.userData = response.data.userData;
-              $scope.user.ccNumber = response.data.userData.cc_number;
-              $scope.user.direction = response.data.userData.direction;
-              $scope.user.docType = response.data.userData.document_type;
-              $scope.user.docNumber = response.data.userData.document_number;
+              if(response.data.userData.cc_number.localeCompare("null")){
+                $scope.user.ccNumber = response.data.userData.cc_number
+              }
+              if(response.data.userData.direction.localeCompare("null")){
+                $scope.user.direction = response.data.userData.direction;
+              }
+              if(response.data.userData.document_type.localeCompare("null")){
+                $scope.user.docType = response.data.userData.document_type;
+              }
+              if(response.data.userData.document_number.localeCompare("null")){
+                $scope.user.docNumber = response.data.userData.document_number;
+              }              
               $scope.user.email = response.data.userData.email;
               $scope.user.lastname = response.data.userData.lastname;
               $scope.user.name = response.data.userData.name;
@@ -427,7 +439,7 @@ angular.module('Ecommerce', [])
         let data2 = {
           method: 'POST',        
           url: 'http://localhost:8080/Tiny_Ecommerce/addOrder',
-          data: {"cartId" : $scope.cartId}          
+          data: {"cartId" : $scope.cartId, "payed" : $scope.payTotal}          
         }   
         $http(data2).then(function successCallback(response) {        
           console.log(response);
@@ -442,6 +454,46 @@ angular.module('Ecommerce', [])
         });
       }
 
+      $scope.getOrders = function(flag){        
+        let data = {
+          method: 'GET',        
+          url: 'http://localhost:8080/Tiny_Ecommerce/getOrders'          
+        }                 
+        $http(data).then(function successCallback(response) {        
+              console.log(response);
+              if(response.status == 200){                
+                $scope.orderData = response.data.orders;
+                if(!flag){
+                  $('#modalOrder').modal('show');                
+                }                                
+              }                         
+            }, function errorCallback(response) {
+              console.log(response);
+              alert(response.data.msg)            
+            }
+          );    
+      }
+      
+      $scope.editOrders = function (orderId, orderStatus){
+        let data = {
+          method: 'PUT',        
+          url: 'http://localhost:8080/Tiny_Ecommerce/editOrder',
+          data: {'orderId': orderId, 'orderStatus': orderStatus}          
+        }
+        console.log(data);                 
+        $http(data).then(function successCallback(response) {        
+              console.log(response);
+              if(response.status == 200){
+                $scope.orderStatus = [];                
+                $scope.getOrders(true);
+                alert(response.data.msg)                
+              }                         
+            }, function errorCallback(response) {
+              console.log(response);
+              alert(response.data.msg)            
+            }
+          );
+      }
      
     
   });

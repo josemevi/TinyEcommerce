@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 
 /**
- * Servlet implementation class GetOrders
+ * This servlet provides all the current created orders inside "orders" table, it can be only access by admin users type
  */
 @WebServlet("/getOrders")
 public class GetOrders extends HttpServlet {

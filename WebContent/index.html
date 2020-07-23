@@ -34,8 +34,8 @@
               <li class="nav-item" ng-click="toggleModal(1)">
                 <a style="color:cornflowerblue; cursor: pointer;" class="nav-link">Profile</a>
               </li>             
-              <li class="nav-item">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Orders</a>
+              <li class="nav-item" ng-click="toggleModal(3)">
+                <a style="color:cornflowerblue; cursor: pointer;" class="nav-link">Orders</a>
               </li>
             </ul>
             
@@ -60,7 +60,7 @@
         </div>
         </nav><br>
         <!-- Image Showcase-->        
-        <!-- <div class="show cointainer-fluid" id="carousel">
+        <div class="show cointainer-fluid" id="carousel">
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
                 <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -99,7 +99,7 @@
                 <span class="sr-only">Next</span>
                 </a>
             </div>
-        </div> -->
+        </div>
         <!-- Page Content -->
         <div class="container-fluid">            
             <!-- Sex Selection Cards -->
@@ -148,13 +148,13 @@
             <div class="container-md">
                 <div class="input-group">
                     <input type="text" ng-model = "searchString" placeholder="Type Here To Search Items" class="form-control" aria-label="Type Here to Search Item" ng-change="getItems('')">
-                    <div class="input-group-append">
+                    <!-- <div class="input-group-append">
                         <select class="btn btn-outline-secondary dropdown-toggle" id="inputGroupSelect02">
                             <option selected>All</option>
                             <option value="1">Woman</option>
                             <option value="2">Male</option>                        
                         </select>
-                    </div>
+                    </div> -->
                 </div>                    
             </div><br><br>
             <!-- Items -->
@@ -177,258 +177,297 @@
                     <h1>No result</h1>
                 </div>
             </div><br>
-        </div>
-        
-        <!-- footer -->
-        <div class="footer-copyright text-center py-3">© 2020 Copyright:
-            <a href="https://github.com/josemevi"> José David Melian Villalobos</a>
-        </div>
-        <!-- signup / login / logout Modal -->
-        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="display-4" id="exampleModalLabel" style="font-size: 36px;">Authentication</h5>
-                  <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                    <form ng-if="!login && !signup">
-                        <div class="form-group d-flex justify-content-center">
-                            <div class="col-md-6">
-                                <label for="formGroupExampleInput">Email</label>
-                                <input type="text" class="form-control" id="formGroupExampleInput" ng-model = "user.email" placeholder="Email" ng-required>
-                            </div>                          
-                        </div>
-                        <div class="form-group d-flex justify-content-center">
-                            <div class="col-md-6">
-                                <label for="formGroupExampleInput2">Password</label>
-                                <input type="password" class="form-control" id="formGroupExampleInput2" ng-model = "user.password" placeholder="Password" ng-required>
-                            </div>            
-                        </div>
-                        <div class="form-group d-flex justify-content-center">
-                            <div class="col-auto" >
-                                <label >Or <a style="text-decoration:underline; color:cornflowerblue; cursor: pointer;" ng-click="toggleSignUp()">Sign up!</a></label>                                
-                            </div>            
-                        </div>
-                        <div class="form-group d-flex justify-content-center">
-                            <div class="col-auto center" >
-                                <button type="button" class="btn btn-success" ng-click="signIn()">Log In</button>                               
-                            </div>            
-                        </div>
-                    </form>
-                    <form ng-if="login && !signup">
-                        <div class="form-group d-flex justify-content-center">
-                            <div class="col-md-6">
-                                <h2>Do you want to log out?</h2>
-                            </div>                          
-                        </div>
-                        <div class="form-group d-flex justify-content-center">
-                            <div class="col-auto center" >
-                                <button type="button" class="btn btn-primary" ng-click="logout()">Yes</button>                               
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            </div>            
-                        </div>
-                    </form>
-                    <form ng-if="signup && !login">
-                        <div class="form-group d-flex justify-content-center">
-                            <div class="col-md-6">
-                                <label for="formGroupExampleInput4">Name</label>
-                                <input type="text" class="form-control" id="formGroupExampleInput4" ng-model = "user.name" placeholder="Name" ng-required>
-                            </div>
-                        </div>
-                        <div class="form-group d-flex justify-content-center">  
-                            <div class="col-md-6">
-                                <label for="formGroupExampleInput5">Lastname</label>
-                                <input type="text" class="form-control" id="formGroupExampleInput5" ng-model = "user.lastname" placeholder="Lastname" ng-required>
-                            </div>  
-                        </div>
-                        <div class="form-group d-flex justify-content-center">     
-                            <div class="col-md-6">
-                                <label for="formGroupExampleInput">Email</label>
-                                <input type="text" class="form-control" id="formGroupExampleInput" ng-model = "user.email" placeholder="Email" ng-required> 
-                            </div>                          
-                        </div>
-                        <div class="form-group d-flex justify-content-center">
-                            <div class="col-md-6">
-                                <label for="formGroupExampleInput2">Password</label>
-                                <input type="password" class="form-control" id="formGroupExampleInput2" ng-model = "user.password" placeholder="Password" ng-required>
-                            </div>            
-                        </div>
-                        <div class="form-group d-flex justify-content-center">
-                            <div class="col-md-6">
-                                <label for="formGroupExampleInput3">Repeat Password</label>
-                                <input type="password" class="form-control" id="formGroupExampleInput3" ng-model = "user.repassword" placeholder="Repeat Password" ng-required>
-                            </div>            
-                        </div>
-                        <div class="form-group d-flex justify-content-center">
-                            <div class="col-auto center" >
-                                <button type="button" class="btn btn-primary" ng-click="signUp()">Sign Up</button>
-                                <button type="button" class="btn btn-secondary" ng-click="cancelSignUp()" data-dismiss="modal">Cancel</button>                              
-                            </div>            
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>                  
-                </div>
-              </div>
+            </div>        
+            <!-- footer -->
+            <div class="footer-copyright text-center py-3">© 2020 Copyright:
+                <a href="https://github.com/josemevi"> José David Melian Villalobos</a>
             </div>
-        </div>
-        <!-- User Info Modal-->
-        <div class="modal fade" id="modalUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="display-4" id="exampleModalLabel2" style="font-size: 36px;">User Information</h5>
-                  <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">                                       
-                    <form>
-                        <div class="form-group d-flex justify-content-center">
-                            <div class="col-md-6">
-                                <label for="formGroupExampleInput4">Name *</label>
-                                <input type="text" class="form-control" ng-model = "user.name" placeholder="Name" ng-required>
+            <!-- signup / login / logout Modal -->
+            <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="display-4" id="exampleModalLabel" style="font-size: 36px;">Authentication</h5>
+                    <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <form ng-if="!login && !signup">
+                            <div class="form-group d-flex justify-content-center">
+                                <div class="col-md-6">
+                                    <label for="formGroupExampleInput">Email</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput" ng-model = "user.email" placeholder="Email" ng-required>
+                                </div>                          
                             </div>
-                        </div>
-                        <div class="form-group d-flex justify-content-center">  
-                            <div class="col-md-6">
-                                <label for="formGroupExampleInput5">Lastname *</label>
-                                <input type="text" class="form-control" ng-model = "user.lastname" placeholder="Lastname" ng-required>
-                            </div>  
-                        </div>
-                        <div class="form-group d-flex justify-content-center">     
-                            <div class="col-md-6">
-                                <label for="formGroupExampleInput0">Email *</label>
-                                <input type="text" class="form-control" ng-model = "user.email" placeholder="Email" ng-required> 
-                            </div>                          
-                        </div>
-                        <div class="form-group d-flex justify-content-center">
-                            <div class="col-md-6">
-                                <label for="formGroupExampleInput2">New Password</label>
-                                <input type="password" class="form-control" ng-model = "user.password" placeholder="Password" ng-required>
-                            </div>            
-                        </div>
-                        <div class="form-group d-flex justify-content-center">
-                            <div class="col-md-6">
-                                <label for="formGroupExampleInput3">Repeat New Password</label>
-                                <input type="password" class="form-control"  ng-model = "user.repassword" placeholder="Repeat Password" ng-required>
-                            </div>            
-                        </div>
-                        <div class="form-group d-flex justify-content-center">
-                            <div class="col-md-6">
-                                <label>Document</label>
-                                <div class="input-group">
-                                    <div class="input-group-append">
-                                        <select class="btn btn-outline-secondary dropdown-toggle" ng-model = "user.docType">
-                                            <option ng-repeat="doc in docTypes" value="{{doc.document_id}}">{{doc.name}}</option>                                                                                                                                   
-                                        </select>
+                            <div class="form-group d-flex justify-content-center">
+                                <div class="col-md-6">
+                                    <label for="formGroupExampleInput2">Password</label>
+                                    <input type="password" class="form-control" id="formGroupExampleInput2" ng-model = "user.password" placeholder="Password" ng-required>
+                                </div>            
+                            </div>
+                            <div class="form-group d-flex justify-content-center">
+                                <div class="col-auto" >
+                                    <label >Or <a style="text-decoration:underline; color:cornflowerblue; cursor: pointer;" ng-click="toggleSignUp()">Sign up!</a></label>                                
+                                </div>            
+                            </div>
+                            <div class="form-group d-flex justify-content-center">
+                                <div class="col-auto center" >
+                                    <button type="button" class="btn btn-success" ng-click="signIn()">Log In</button>                               
+                                </div>            
+                            </div>
+                        </form>
+                        <form ng-if="login && !signup">
+                            <div class="form-group d-flex justify-content-center">
+                                <div class="col-md-6">
+                                    <h2>Do you want to log out?</h2>
+                                </div>                          
+                            </div>
+                            <div class="form-group d-flex justify-content-center">
+                                <div class="col-auto center" >
+                                    <button type="button" class="btn btn-primary" ng-click="logout()">Yes</button>                               
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                </div>            
+                            </div>
+                        </form>
+                        <form ng-if="signup && !login">
+                            <div class="form-group d-flex justify-content-center">
+                                <div class="col-md-6">
+                                    <label for="formGroupExampleInput4">Name</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput4" ng-model = "user.name" placeholder="Name" ng-required>
+                                </div>
+                            </div>
+                            <div class="form-group d-flex justify-content-center">  
+                                <div class="col-md-6">
+                                    <label for="formGroupExampleInput5">Lastname</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput5" ng-model = "user.lastname" placeholder="Lastname" ng-required>
+                                </div>  
+                            </div>
+                            <div class="form-group d-flex justify-content-center">     
+                                <div class="col-md-6">
+                                    <label for="formGroupExampleInput">Email</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput" ng-model = "user.email" placeholder="Email" ng-required> 
+                                </div>                          
+                            </div>
+                            <div class="form-group d-flex justify-content-center">
+                                <div class="col-md-6">
+                                    <label for="formGroupExampleInput2">Password</label>
+                                    <input type="password" class="form-control" id="formGroupExampleInput2" ng-model = "user.password" placeholder="Password" ng-required>
+                                </div>            
+                            </div>
+                            <div class="form-group d-flex justify-content-center">
+                                <div class="col-md-6">
+                                    <label for="formGroupExampleInput3">Repeat Password</label>
+                                    <input type="password" class="form-control" id="formGroupExampleInput3" ng-model = "user.repassword" placeholder="Repeat Password" ng-required>
+                                </div>            
+                            </div>
+                            <div class="form-group d-flex justify-content-center">
+                                <div class="col-auto center" >
+                                    <button type="button" class="btn btn-primary" ng-click="signUp()">Sign Up</button>
+                                    <button type="button" class="btn btn-secondary" ng-click="cancelSignUp()" data-dismiss="modal">Cancel</button>                              
+                                </div>            
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>                  
+                    </div>
+                </div>
+                </div>
+            </div>
+            <!-- User Info Modal-->
+            <div class="modal fade" id="modalUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="display-4" id="exampleModalLabel2" style="font-size: 36px;">User Information</h5>
+                    <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">                                       
+                        <form>
+                            <div class="form-group d-flex justify-content-center">
+                                <div class="col-md-6">
+                                    <label for="formGroupExampleInput4">Name *</label>
+                                    <input type="text" class="form-control" ng-model = "user.name" placeholder="Name" ng-required>
+                                </div>
+                            </div>
+                            <div class="form-group d-flex justify-content-center">  
+                                <div class="col-md-6">
+                                    <label for="formGroupExampleInput5">Lastname *</label>
+                                    <input type="text" class="form-control" ng-model = "user.lastname" placeholder="Lastname" ng-required>
+                                </div>  
+                            </div>
+                            <div class="form-group d-flex justify-content-center">     
+                                <div class="col-md-6">
+                                    <label for="formGroupExampleInput0">Email *</label>
+                                    <input type="text" class="form-control" ng-model = "user.email" placeholder="Email" ng-required> 
+                                </div>                          
+                            </div>
+                            <div class="form-group d-flex justify-content-center">
+                                <div class="col-md-6">
+                                    <label for="formGroupExampleInput2">New Password</label>
+                                    <input type="password" class="form-control" ng-model = "user.password" placeholder="Password" ng-required>
+                                </div>            
+                            </div>
+                            <div class="form-group d-flex justify-content-center">
+                                <div class="col-md-6">
+                                    <label for="formGroupExampleInput3">Repeat New Password</label>
+                                    <input type="password" class="form-control"  ng-model = "user.repassword" placeholder="Repeat Password" ng-required>
+                                </div>            
+                            </div>
+                            <div class="form-group d-flex justify-content-center">
+                                <div class="col-md-6">
+                                    <label>Document</label>
+                                    <div class="input-group">
+                                        <div class="input-group-append">
+                                            <select class="btn btn-outline-secondary dropdown-toggle" ng-model = "user.docType">
+                                                <option ng-repeat="doc in docTypes" value="{{doc.document_id}}">{{doc.name}}</option>                                                                                                                                   
+                                            </select>
+                                        </div>
+                                        <input type="text" ng-model = "user.docNumber" placeholder="Document Number" class="form-control" aria-label="Document Bumber">                                    
                                     </div>
-                                    <input type="text" ng-model = "user.docNumber" placeholder="Document Number" class="form-control" aria-label="Document Bumber">                                    
-                                </div>
-                            </div>                                                               
-                        </div>
-                        <div class="form-group d-flex justify-content-center">
-                            <div class="col-md-6">
-                                <label for="formGroupExampleInput3">Shipment Direction</label>
-                                <input type="text" class="form-control" ng-model = "user.direction" placeholder="Shipment Direction" ng-required>
-                            </div>            
-                        </div>
-                        <div class="form-group d-flex justify-content-center">
-                            <div class="col-md-6">
-                                <label for="formGroupExampleInput3">Credit Card Number</label>
-                                <input type="text" class="form-control" ng-model = "user.ccNumber" placeholder="Credit Card Number" ng-required>
-                            </div>            
-                        </div>                        
-                        <div class="form-group d-flex justify-content-center">
-                            <div class="col-auto center" >
-                                <button type="button" class="btn btn-primary" ng-click="editUserInfo()">Edit</button>
-                                <button type="button" class="btn btn-secondary" ng-click="cancelSignUp()" data-dismiss="modal">Cancel</button>                              
-                            </div>            
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>                  
-                </div>
-              </div>
-            </div>
-        </div>
-        <!-- Shopping Cart and Checkout Modal -->
-        <div class="modal fade" id="modalCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="display-4" id="exampleModalLabel2" style="font-size: 36px;">Shopping Cart</h5>
-                  <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                    <div ng-if="!payment">
-                        <div ng-repeat = "itemc in userCart">
-                            <div class="row">
-                                <div class="col-6 d-flex justify-content-center">
-                                    <div class="card mb-3" style="max-width: 540px;">
-                                        <div class="row no-gutters">
-                                        <div class="col-md-4">
-                                            <img ng-src="{{itemc.image}}" class="card-img" alt="...">
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="card-body">
-                                                <h5 class="card-title">{{itemc.name}} x{{itemc.amount}}</h5>
-                                                <p class="card-text">{{itemc.description}}</p>
-                                                <p class="card-text"><small class="text-muted">{{itemc.price}}$ x {{ itemc.amount}} = {{itemc.price*itemc.amount}}$</small></p>
-                                            </div>
-                                        </div>
-                                        </div>
-                                    </div> 
-                                </div>
-                                <div class="col">
-                                    <div class="d-flex justify-content-center">                                    
-                                        <button  ng-click="removeItem($index)" type="button" class="btn btn-outline-danger"><i class="material-icons" style="font-size:24px">delete</i></button>
-                                    </div>                                
-                                </div>                            
-                            </div>                                                           
-                        </div><br>
-                        <h2 ng-if="userCart.length > 0" >Total: {{payTotal.toFixed(2)}}$</h2>
-                        <h1 ng-if="userCart.length == 0">No Items Yet</h1>
-                        <div ng-if="userCart.length > 0" class="form-group d-flex justify-content-center">
-                            <div class="col-auto center" >
-                                <button type="button" class="btn btn-primary" ng-click="pay()">Checkout</button>
-                                <button type="button" class="btn btn-secondary" ng-click="cancelSignUp()" data-dismiss="modal">Cancel</button>                              
-                            </div>            
-                        </div>                  
-                    </div>
-                </div>
-                <div ng-if="payment">
-                
-                    <div class="form-group d-flex justify-content-center">
-                        <div class="col-md-6">
-                            <h3>You're about to pay {{payTotal.toFixed(2)}}$. Want to proceed?</h3>
-                            <input class="form-check-input position-static" type="checkbox" ng-model="confirmPay" aria-label="...">                    
-                             <span>I Accept the terms and conditions</span>
-                        </div>                          
-                    </div>                    
-                    <div class="form-group d-flex justify-content-center">
-                        <div class="col-auto center" >
-                            <div class="form-check">                                
+                                </div>                                                               
                             </div>
-                            <button ng-disabled="!confirmPay" type="button" class="btn btn-primary" ng-click="checkout()">Pay</button>
-                        <button type="button" class="btn btn-secondary" ng-click="back()">Back</button>
-                        </div>            
+                            <div class="form-group d-flex justify-content-center">
+                                <div class="col-md-6">
+                                    <label for="formGroupExampleInput3">Shipment Direction</label>
+                                    <input type="text" class="form-control" ng-model = "user.direction" placeholder="Shipment Direction" ng-required>
+                                </div>            
+                            </div>
+                            <div class="form-group d-flex justify-content-center">
+                                <div class="col-md-6">
+                                    <label for="formGroupExampleInput3">Credit Card Number</label>
+                                    <input type="text" class="form-control" ng-model = "user.ccNumber" placeholder="Credit Card Number" ng-required>
+                                </div>            
+                            </div>                        
+                            <div class="form-group d-flex justify-content-center">
+                                <div class="col-auto center" >
+                                    <button type="button" class="btn btn-primary" ng-click="editUserInfo()">Edit</button>
+                                    <button type="button" class="btn btn-secondary" ng-click="cancelSignUp()" data-dismiss="modal">Cancel</button>                              
+                                </div>            
+                            </div>
+                        </form>
                     </div>
-                            
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>                  
+                    </div>
                 </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>                  
                 </div>
-              </div>
             </div>
-        </div>
+            <!-- Shopping Cart and Checkout Modal -->
+            <div class="modal fade" id="modalCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="display-4" id="exampleModalLabel2" style="font-size: 36px;">Shopping Cart</h5>
+                    <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <div ng-if="!payment">
+                            <div ng-repeat = "itemc in userCart track by $index">
+                                <div class="row">
+                                    <div class="col-6 d-flex justify-content-center">
+                                        <div class="card mb-3" style="max-width: 540px;">
+                                            <div class="row no-gutters">
+                                            <div class="col-md-4">
+                                                <img ng-src="{{itemc.image}}" class="card-img" alt="...">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">{{itemc.name}} x{{itemc.amount}}</h5>
+                                                    <p class="card-text">{{itemc.description}}</p>
+                                                    <p class="card-text"><small class="text-muted">{{itemc.price}}$ x {{ itemc.amount}} = {{itemc.price*itemc.amount}}$</small></p>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    <div class="col">
+                                        <div class="d-flex justify-content-center">                                    
+                                            <button  ng-click="removeItem($index)" type="button" class="btn btn-outline-danger"><i class="material-icons" style="font-size:24px">delete</i></button>
+                                        </div>                                
+                                    </div>                            
+                                </div>                                                           
+                            </div><br>
+                            <h2 ng-if="userCart.length > 0" >Total: {{payTotal.toFixed(2)}}$</h2>
+                            <h1 ng-if="userCart.length == 0">No Items Yet</h1>
+                            <div ng-if="userCart.length > 0" class="form-group d-flex justify-content-center">
+                                <div class="col-auto center" >
+                                    <button type="button" class="btn btn-primary" ng-click="pay()">Checkout</button>
+                                    <button type="button" class="btn btn-secondary" ng-click="cancelSignUp()" data-dismiss="modal">Cancel</button>                              
+                                </div>            
+                            </div>                  
+                        </div>
+                    </div>
+                    <div ng-if="payment">                
+                        <div class="form-group d-flex justify-content-center">
+                            <div class="col-md-6">
+                                <h3>You're about to pay {{payTotal.toFixed(2)}}$. Want to proceed?</h3>
+                                <input class="form-check-input position-static" type="checkbox" ng-model="confirmPay" aria-label="...">                    
+                                <span>I Accept the terms and conditions</span>
+                            </div>                          
+                        </div>                    
+                        <div class="form-group d-flex justify-content-center">
+                            <div class="col-auto center" >
+                                <div class="form-check">                                
+                                </div>
+                                <button ng-disabled="!confirmPay" type="button" class="btn btn-primary" ng-click="checkout()">Pay</button>
+                            <button type="button" class="btn btn-secondary" ng-click="back()">Back</button>
+                            </div>            
+                        </div>
+                                
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>                  
+                    </div>
+                </div>
+                </div>
+            </div>
+            <!-- Order Review Modal  -->
+            <div class="modal fade" id="modalOrder" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="display-4" id="exampleModalLabel2" style="font-size: 36px;">Orders</h5>
+                    <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">                                       
+                        <form ng-repeat="order in orderData | orderBy: 'order_id'">
+                            <div class="form-group d-flex justify-content-center">
+                                <div class="col-md-6">
+                                    <label >Order ID = {{order.order_id}}</label>                                
+                                </div>
+                            </div>
+                            <div class="form-group d-flex justify-content-center">  
+                                <div class="col-md-6">
+                                    <label>Total Payed = {{order.payed}}</label>                            
+                                </div>  
+                            </div>
+                            <div class="form-group d-flex justify-content-center">     
+                                <div class="col-md-6">
+                                    <label>Order Status</label>
+                                    <input type="text" class="form-control" ng-model = "orderStatus[order.order_id]" placeholder="{{order.order_status}}" ng-required> 
+                                </div>                          
+                            </div>                              
+                            <div class="form-group d-flex justify-content-center">
+                                <div class="col-auto center" >
+                                    <button type="button" class="btn btn-primary" ng-click="editOrders(order.order_id, orderStatus[order.order_id])">Edit Order Status</button>                                                                  
+                                </div>            
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>                  
+                    </div>
+                </div>
+                </div>
+            </div>
     </div>
 </body>
 </html>

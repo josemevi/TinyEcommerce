@@ -10,7 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 /**
- * Servlet implementation class getCategories
+ * This Servlet provided all the categories inside "catalog" table. All the categories displayed over the FrontEnd are dynamic, is possible to add categories without affecting data flow or requiring
+ * implementation over the front end. We can do the same for the items
  */
 @WebServlet("/getCategories")
 public class GetCategories extends HttpServlet {

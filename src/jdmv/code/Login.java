@@ -14,7 +14,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Servlet implementation class Login
+ * This servlets creates and  verify sessions, it also provides the current user shopping cart
+ * information (if exist)  
  */
 @WebServlet("/login")
 public class Login extends HttpServlet {
@@ -32,8 +33,7 @@ public class Login extends HttpServlet {
     	cart = new JSONObject();
     	String result = "";
     	try {
-			result = "{\"items\":"+con.getJSONFromDB("SELECT items  FROM cart WHERE user_id="+userId+" AND checkout=false");
-			System.out.println(result);
+			result = "{\"items\":"+con.getJSONFromDB("SELECT items  FROM cart WHERE user_id="+userId+" AND checkout=false");			
 			if(result.equals("{\"items\":")) {
 				result = "{\"items\":\"\""+"}";
 			}			
@@ -91,7 +91,7 @@ public class Login extends HttpServlet {
 			json.put("userId", session.getAttribute("userId"));
 			json.put("rol", session.getAttribute("rol"));
 			json.put("msg", "Already logged");
-			session.setAttribute("cart", cart.get("items"));
+			json.put("cart", cart.get("items"));
 		}
 		
 		response.getWriter().print(json.toString());

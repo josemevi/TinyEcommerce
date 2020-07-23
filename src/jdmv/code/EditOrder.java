@@ -11,7 +11,8 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 
 /**
- * Servlet implementation class EditOrder
+ * This Servlet just edits the "status" column inside of "orders" table, this ep
+ * can be only acceded by Admin types users
  */
 @WebServlet("/editOrder")
 public class EditOrder extends HttpServlet {
@@ -24,10 +25,20 @@ public class EditOrder extends HttpServlet {
     }
 
 	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+	}
+
+
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
-		String orderId = request.getParameter("orderId");
-		String status = request.getParameter("status");
+		//String orderId = request.getParameter("orderId");
+		//String status = request.getParameter("status");
+		JSONObject requestB = con.retrieveJson(request);
+		String orderId = requestB.getString("orderId");
+		String status = requestB.getString("orderStatus");
+		System.out.println(orderId);
+		System.out.println(status);
 		JSONObject json = new JSONObject();
 		if(!con.checkString(status)) {
 			status = "In Progress";
@@ -50,12 +61,6 @@ public class EditOrder extends HttpServlet {
 			json.put("msg", "Invalid Session or insufficient permissions");
 		}
 		response.getWriter().print(json.toString());
-	}
-
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 }
