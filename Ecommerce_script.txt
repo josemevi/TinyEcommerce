@@ -1,0 +1,598 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 10.13
+-- Dumped by pg_dump version 10.13
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: Ecommerce; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE "Ecommerce" WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'Spanish_Spain.1252' LC_CTYPE = 'Spanish_Spain.1252';
+
+
+ALTER DATABASE "Ecommerce" OWNER TO postgres;
+
+\connect "Ecommerce"
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: cart; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.cart (
+    cart_id integer NOT NULL,
+    items jsonb,
+    checkout boolean DEFAULT false NOT NULL,
+    user_id integer NOT NULL
+);
+
+
+ALTER TABLE public.cart OWNER TO postgres;
+
+--
+-- Name: cart_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.cart_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cart_id_seq OWNER TO postgres;
+
+--
+-- Name: cart_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.cart_id_seq OWNED BY public.cart.cart_id;
+
+
+--
+-- Name: catalog; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.catalog (
+    catalog_id integer NOT NULL,
+    name character varying NOT NULL,
+    cover_img character varying
+);
+
+
+ALTER TABLE public.catalog OWNER TO postgres;
+
+--
+-- Name: catalog_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.catalog_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.catalog_id_seq OWNER TO postgres;
+
+--
+-- Name: catalog_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.catalog_id_seq OWNED BY public.catalog.catalog_id;
+
+
+--
+-- Name: document_types; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.document_types (
+    document_id integer NOT NULL,
+    name character varying NOT NULL
+);
+
+
+ALTER TABLE public.document_types OWNER TO postgres;
+
+--
+-- Name: document_types_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.document_types_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.document_types_id_seq OWNER TO postgres;
+
+--
+-- Name: document_types_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.document_types_id_seq OWNED BY public.document_types.document_id;
+
+
+--
+-- Name: items; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.items (
+    catalog_id integer NOT NULL,
+    description character varying NOT NULL,
+    item_id integer NOT NULL,
+    name character varying NOT NULL,
+    price numeric NOT NULL,
+    stock integer NOT NULL,
+    gender smallint NOT NULL,
+    highlight boolean DEFAULT false,
+    images character varying
+);
+
+
+ALTER TABLE public.items OWNER TO postgres;
+
+--
+-- Name: item_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.item_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.item_id_seq OWNER TO postgres;
+
+--
+-- Name: item_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.item_id_seq OWNED BY public.items.item_id;
+
+
+--
+-- Name: orders; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.orders (
+    order_id integer NOT NULL,
+    cart_id integer NOT NULL,
+    order_status character varying DEFAULT 'In Progress'::character varying,
+    payed numeric NOT NULL
+);
+
+
+ALTER TABLE public.orders OWNER TO postgres;
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.orders_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.orders_id_seq OWNER TO postgres;
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.orders_id_seq OWNED BY public.orders.order_id;
+
+
+--
+-- Name: user_roles; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.user_roles (
+    rol_id integer NOT NULL,
+    rolname character varying NOT NULL
+);
+
+
+ALTER TABLE public.user_roles OWNER TO postgres;
+
+--
+-- Name: user_roles_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.user_roles_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_roles_id_seq OWNER TO postgres;
+
+--
+-- Name: user_roles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.user_roles_id_seq OWNED BY public.user_roles.rol_id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.users (
+    user_id integer NOT NULL,
+    email character varying NOT NULL,
+    rol_type integer DEFAULT 1 NOT NULL,
+    password character varying NOT NULL,
+    name character varying NOT NULL,
+    lastname character varying NOT NULL,
+    document_type integer,
+    direction character varying,
+    cc_number bigint,
+    document_number character varying
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.users_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO postgres;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.user_id;
+
+
+--
+-- Name: cart cart_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cart ALTER COLUMN cart_id SET DEFAULT nextval('public.cart_id_seq'::regclass);
+
+
+--
+-- Name: catalog catalog_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.catalog ALTER COLUMN catalog_id SET DEFAULT nextval('public.catalog_id_seq'::regclass);
+
+
+--
+-- Name: document_types document_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.document_types ALTER COLUMN document_id SET DEFAULT nextval('public.document_types_id_seq'::regclass);
+
+
+--
+-- Name: items item_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.items ALTER COLUMN item_id SET DEFAULT nextval('public.item_id_seq'::regclass);
+
+
+--
+-- Name: orders order_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders ALTER COLUMN order_id SET DEFAULT nextval('public.orders_id_seq'::regclass);
+
+
+--
+-- Name: user_roles rol_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_roles ALTER COLUMN rol_id SET DEFAULT nextval('public.user_roles_id_seq'::regclass);
+
+
+--
+-- Name: users user_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Data for Name: cart; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cart (cart_id, items, checkout, user_id) FROM stdin;
+20	[{"name": "Ankle Boots", "image": "https://images.unsplash.com/photo-1531310197839-ccf54634509e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1001&q=80", "price": "69.99", "amount": 1, "item_id": "10", "$$hashKey": "object:45", "description": "Woman Ankle Boots"}, {"name": "Nike Lowtops White", "image": "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1951&q=80", "price": "49.99", "amount": 1, "item_id": "9", "$$hashKey": "object:49", "description": "Man Lowtops Nike Shoes"}, {"name": "Woman Pants", "image": "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80", "price": "24.99", "amount": 1, "item_id": "8", "description": "Woman Dress Pants"}]	t	19
+18	[{"name": "Ankle Boots", "image": "https://images.unsplash.com/photo-1531310197839-ccf54634509e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1001&q=80", "price": "69.99", "amount": 1, "item_id": "10", "$$hashKey": "object:56", "description": "Woman Ankle Boots"}, {"name": "Nike Lowtops White", "image": "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1951&q=80", "price": "49.99", "amount": 1, "item_id": "9", "$$hashKey": "object:60", "description": "Man Lowtops Nike Shoes"}, {"name": "Woman Pants", "image": "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80", "price": "24.99", "amount": 1, "item_id": "8", "description": "Woman Dress Pants"}]	t	6
+19	[{"name": "Casual Watch", "image": "https://images.unsplash.com/photo-1434056886845-dac89ffe9b56?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80", "price": "14.99", "amount": 2, "item_id": "12", "$$hashKey": "object:281", "description": "Man Casual Watch"}, {"name": "Ankle Boots", "image": "https://images.unsplash.com/photo-1531310197839-ccf54634509e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1001&q=80", "price": "69.99", "amount": 1, "item_id": "10", "$$hashKey": "object:285", "description": "Woman Ankle Boots"}, {"name": "Nike Lowtops White", "image": "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1951&q=80", "price": "49.99", "amount": 1, "item_id": "9", "$$hashKey": "object:287", "description": "Man Lowtops Nike Shoes"}, {"name": "Gold Framed Glasses", "image": "https://images.unsplash.com/photo-1511499767150-a48a237f0083?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1400&q=80", "price": "100", "amount": 1, "item_id": "11", "$$hashKey": "object:289", "description": "Woman Gold Framed Glasses"}, {"name": "Woman Pants", "image": "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80", "price": "24.99", "amount": 1, "item_id": "8", "$$hashKey": "object:291", "description": "Woman Dress Pants"}, {"name": "Three Shirt", "image": "https://images.unsplash.com/photo-1511595549243-ba5666cf0961?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80", "price": "16.99", "amount": 1, "item_id": "4", "$$hashKey": "object:295", "description": "Woman Standard Woman T-Shirt"}, {"name": "Death Peace ", "image": "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80", "price": "16.99", "amount": 1, "item_id": "3", "$$hashKey": "object:297", "description": "Man Standard T-Shirt"}]	t	19
+21	[{"name": "Ankle Boots", "image": "https://images.unsplash.com/photo-1531310197839-ccf54634509e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1001&q=80", "price": "69.99", "amount": 1, "item_id": "10", "description": "Woman Ankle Boots"}, {"name": "Casual Watch", "image": "https://images.unsplash.com/photo-1434056886845-dac89ffe9b56?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80", "price": "14.99", "amount": 1, "item_id": "12", "description": "Man Casual Watch"}]	t	5
+17	[{"name": "Ankle Boots", "image": "https://images.unsplash.com/photo-1531310197839-ccf54634509e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1001&q=80", "price": "69.99", "amount": 1, "item_id": "10", "description": "Woman Ankle Boots"}]	t	5
+\.
+
+
+--
+-- Data for Name: catalog; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.catalog (catalog_id, name, cover_img) FROM stdin;
+2	Shirts	https://images.unsplash.com/photo-1506274512-56255c252865?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80
+3	Pants	https://images.unsplash.com/photo-1541099649105-f69ad21f3246?ixlib=rb-1.2.1&auto=format&fit=crop&w=934&q=80
+4	Shoes	https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=943&q=80
+5	Accesories\n	https://images.unsplash.com/photo-1559196462-a9787ea00c7b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80
+\.
+
+
+--
+-- Data for Name: document_types; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.document_types (document_id, name) FROM stdin;
+0	DNI\n
+1	NIE
+2	PASSPORT
+\.
+
+
+--
+-- Data for Name: items; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.items (catalog_id, description, item_id, name, price, stock, gender, highlight, images) FROM stdin;
+2	Man Dress Shirt	5	Dress Shirt	24.99	10	0	f	https://images.unsplash.com/photo-1588359348347-9bc6cbbb689e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80
+3	Man Work Pants	7	Work Pants	29.99	5	0	f	https://images.unsplash.com/photo-1548883354-7622d03aca27?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80
+3	Woman Dress Pants	8	Woman Pants	24.99	10	1	f	https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80
+4	Man Lowtops Nike Shoes	9	Nike Lowtops White	49.99	5	0	f	https://images.unsplash.com/photo-1460353581641-37baddab0fa2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1951&q=80
+4	Woman Ankle Boots\n	10	Ankle Boots	69.99	5	1	f	https://images.unsplash.com/photo-1531310197839-ccf54634509e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1001&q=80
+2	Man Standard T-Shirt	3	Death Peace 	16.99	20	0	t	https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80
+2	Woman Standard Woman T-Shirt	4	Three Shirt	16.99	20	1	t	https://images.unsplash.com/photo-1511595549243-ba5666cf0961?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80
+5	Woman Gold Framed Glasses	11	Gold Framed Glasses	100	5	1	f	https://images.unsplash.com/photo-1511499767150-a48a237f0083?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1400&q=80
+5	Man Casual Watch	12	Casual Watch	14.99	20	0	f	https://images.unsplash.com/photo-1434056886845-dac89ffe9b56?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80
+\.
+
+
+--
+-- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.orders (order_id, cart_id, order_status, payed) FROM stdin;
+15	20	Completed	144.97
+16	21	Completed	84.98
+\.
+
+
+--
+-- Data for Name: user_roles; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.user_roles (rol_id, rolname) FROM stdin;
+0	admin\n
+1	default\n
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.users (user_id, email, rol_type, password, name, lastname, document_type, direction, cc_number, document_number) FROM stdin;
+5	admin	0	admin	Jose	Melian	0	Calle Sanson y Barrios 28	1235678	12344
+6	default	0	default\n	default\n	default	\N	\N	\N	\N
+19	josedavidmelian@gmail.com	1	12345	Jose	David	0	Calle	111111111111111	1234
+\.
+
+
+--
+-- Name: cart_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.cart_id_seq', 21, true);
+
+
+--
+-- Name: catalog_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.catalog_id_seq', 6, true);
+
+
+--
+-- Name: document_types_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.document_types_id_seq', 1, true);
+
+
+--
+-- Name: item_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.item_id_seq', 12, true);
+
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.orders_id_seq', 16, true);
+
+
+--
+-- Name: user_roles_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.user_roles_id_seq', 2, true);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 19, true);
+
+
+--
+-- Name: cart cart_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cart
+    ADD CONSTRAINT cart_pkey PRIMARY KEY (cart_id);
+
+
+--
+-- Name: catalog catalog_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.catalog
+    ADD CONSTRAINT catalog_pkey PRIMARY KEY (catalog_id);
+
+
+--
+-- Name: document_types document_types_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.document_types
+    ADD CONSTRAINT document_types_pkey PRIMARY KEY (document_id);
+
+
+--
+-- Name: users email_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT email_unique UNIQUE (email);
+
+
+--
+-- Name: items item_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.items
+    ADD CONSTRAINT item_pkey PRIMARY KEY (item_id);
+
+
+--
+-- Name: orders orders_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders_pkey PRIMARY KEY (order_id);
+
+
+--
+-- Name: user_roles user_roles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_roles
+    ADD CONSTRAINT user_roles_pkey PRIMARY KEY (rol_id);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (user_id);
+
+
+--
+-- Name: items catalog_type_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.items
+    ADD CONSTRAINT catalog_type_id FOREIGN KEY (catalog_id) REFERENCES public.catalog(catalog_id) NOT VALID;
+
+
+--
+-- Name: users document_type_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT document_type_id FOREIGN KEY (document_type) REFERENCES public.document_types(document_id) NOT VALID;
+
+
+--
+-- Name: users rol_type_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT rol_type_id FOREIGN KEY (rol_type) REFERENCES public.user_roles(rol_id);
+
+
+--
+-- Name: cart user_specific_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cart
+    ADD CONSTRAINT user_specific_id FOREIGN KEY (user_id) REFERENCES public.users(user_id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
