@@ -37,8 +37,6 @@ public class EditOrder extends HttpServlet {
 		JSONObject requestB = con.retrieveJson(request);
 		String orderId = requestB.getString("orderId");
 		String status = requestB.getString("orderStatus");
-		System.out.println(orderId);
-		System.out.println(status);
 		JSONObject json = new JSONObject();
 		if(!con.checkString(status)) {
 			status = "In Progress";
