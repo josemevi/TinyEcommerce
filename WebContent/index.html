@@ -60,7 +60,7 @@
         </div>
         </nav><br>
         <!-- Image Showcase-->        
-        <!-- <div class="show cointainer-fluid" id="carousel">
+        <div class="show cointainer-fluid" id="carousel">
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
                 <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -99,7 +99,7 @@
                 <span class="sr-only">Next</span>
                 </a>
             </div>
-        </div> -->
+        </div>
         <!-- Page Content -->
         <div class="container-fluid">            
             <!-- Sex Selection Cards -->
@@ -148,13 +148,13 @@
             <div class="container-md">
                 <div class="input-group">
                     <input type="text" ng-model = "searchString" placeholder="Type Here To Search Items" class="form-control" aria-label="Type Here to Search Item" ng-change="getItems('')">
-                    <div class="input-group-append">
+                    <!-- <div class="input-group-append">
                         <select class="btn btn-outline-secondary dropdown-toggle" id="inputGroupSelect02">
                             <option selected>All</option>
                             <option value="1">Woman</option>
                             <option value="2">Male</option>                        
                         </select>
-                    </div>
+                    </div> -->
                 </div>                    
             </div><br><br>
             <!-- Items -->
@@ -368,7 +368,7 @@
                     </div>
                     <div class="modal-body">
                         <div ng-if="!payment">
-                            <div ng-repeat = "itemc in userCart">
+                            <div ng-repeat = "itemc in userCart track by $index">
                                 <div class="row">
                                     <div class="col-6 d-flex justify-content-center">
                                         <div class="card mb-3" style="max-width: 540px;">

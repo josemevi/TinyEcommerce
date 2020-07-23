@@ -11,7 +11,8 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 
 /**
- * Servlet implementation class Logout
+ * this servlet destroy the current session
+ * 
  */
 @WebServlet("/logout")
 public class Logout extends HttpServlet {

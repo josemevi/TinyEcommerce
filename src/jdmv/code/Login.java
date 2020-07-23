@@ -14,7 +14,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Servlet implementation class Login
+ * This servlets creates and  verify sessions, it also provides the current user shopping cart
+ * information (if exist)  
  */
 @WebServlet("/login")
 public class Login extends HttpServlet {

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 
 /**
- * Servlet implementation class GetUserInfo
+ * This Servlets provides all the data related inside the "users" table
  */
 @WebServlet("/getUserInfo")
 public class GetUserInfo extends HttpServlet {

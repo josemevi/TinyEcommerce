@@ -10,7 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 /**
- * Servlet implementation class GetItems
+ * This servlet provides all the items and filtered items depending on the case. Is possible to filter by sex (male female), by category
+ * and by searching with string for name of items
  */
 @WebServlet("/getItems")
 public class GetItems extends HttpServlet {

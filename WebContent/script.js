@@ -30,8 +30,8 @@ angular.module('Ecommerce', [])
       email : '',
       password : '',
       repassword: '',
-      docType: '',
-      docNumber: '',
+      docType: 0,
+      docNumber: 0,
       direction: '',
       ccNumber: '',
     }
@@ -214,7 +214,7 @@ angular.module('Ecommerce', [])
               if(response.status == 201){
                 $scope.signup = false;
                 $scope.cleanUserData();
-                alert("Please Log In");
+                alert("Account Created Please Log In");
               }            
             }, function errorCallback(response) {
               console.log(response);
@@ -255,10 +255,18 @@ angular.module('Ecommerce', [])
             console.log(response);
             if(response.status == 200){
               $scope.userData = response.data.userData;
-              $scope.user.ccNumber = response.data.userData.cc_number;
-              $scope.user.direction = response.data.userData.direction;
-              $scope.user.docType = response.data.userData.document_type;
-              $scope.user.docNumber = response.data.userData.document_number;
+              if(response.data.userData.cc_number.localeCompare("null")){
+                $scope.user.ccNumber = response.data.userData.cc_number
+              }
+              if(response.data.userData.direction.localeCompare("null")){
+                $scope.user.direction = response.data.userData.direction;
+              }
+              if(response.data.userData.document_type.localeCompare("null")){
+                $scope.user.docType = response.data.userData.document_type;
+              }
+              if(response.data.userData.document_number.localeCompare("null")){
+                $scope.user.docNumber = response.data.userData.document_number;
+              }              
               $scope.user.email = response.data.userData.email;
               $scope.user.lastname = response.data.userData.lastname;
               $scope.user.name = response.data.userData.name;

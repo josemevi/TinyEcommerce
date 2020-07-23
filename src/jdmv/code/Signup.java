@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 
 /**
- * Servlet implementation class Signup
+ * This servlet creates users with the minimun necessary information. Also validates if the user email is already inside the "users" table
  */
 @WebServlet("/signup")
 public class Signup extends HttpServlet {

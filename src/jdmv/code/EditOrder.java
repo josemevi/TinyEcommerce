@@ -11,7 +11,8 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 
 /**
- * Servlet implementation class EditOrder
+ * This Servlet just edits the "status" column inside of "orders" table, this ep
+ * can be only acceded by Admin types users
  */
 @WebServlet("/editOrder")
 public class EditOrder extends HttpServlet {

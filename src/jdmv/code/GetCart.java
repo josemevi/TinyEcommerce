@@ -14,7 +14,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Servlet implementation class GetCart
+ * This Servlet principal function is to provided the cart_id inside cart table before the checkout (also provided all the items inside user cart).
+ * This is because in the way i approach to the solution i decided that all the shopping carts will be dynamic and can be either destroyed or edited 
+ * with the only restriction if there's a order associated inside "orders" table (constraint made inside the DB).
+ * 
  */
 @WebServlet("/getCart")
 public class GetCart extends HttpServlet {

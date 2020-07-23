@@ -12,8 +12,9 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
-/**
- * Servlet implementation class AddCartItem
+/* This Servlets manages all the shopping cart logic. I decided to use a "jsonb" column inside cart table to  
+ * store all information related to the item, in this way i was able to add / delete / modify and keep items inside the
+ * shopping cart by simple manipulating this json on the front-end and sending in over the back in each related action
  */
 @WebServlet("/editCartItems")
 public class EditCartItems extends HttpServlet {
@@ -26,23 +27,6 @@ public class EditCartItems extends HttpServlet {
         super();
        
     }
-    
-    /*public int CheckCart (String userId, String itemId) {
-		String result = "";
-    	try {
-			result = "{\"items\":"+con.getJSONFromDB("SELECT items  FROM cart WHERE user_id="+userId);
-			if(result.contains("\"item_id\": "+con.doubleQuoted(itemId))) {
-				return 0;
-			}else if (result.contains("null")) {
-				return 1;
-			}
-		
-		} catch (JSONException | SQLException e) {
-		
-			e.printStackTrace();
-		}
-    	return 2;
-    }*/
     
     public boolean CartCreated (String user_id) {
 		if(con.execSql("SELECT * FROM cart WHERE user_id= "+con.simpleQuoted(user_id)+" AND checkout=false") == 1 ) {

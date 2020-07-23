@@ -11,7 +11,9 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 
 /**
- * Servlet implementation class AddOrder
+ * This Servlets creates the orders and changes the column "checkout" of cart to true
+ * The reason of this column is to avoid redundant data in the DB
+ * i
  */
 @WebServlet("/addOrder")
 public class AddOrder extends HttpServlet {
@@ -23,6 +25,7 @@ public class AddOrder extends HttpServlet {
         
     }
     
+    //validates the cart_id inside orders table
     public boolean checkOrder (String orderId) {
 		if(con.execSql("SELECT cart_id FROM orders WHERE cart_id= "+con.simpleQuoted(orderId)) == 1) {
 			return true;
